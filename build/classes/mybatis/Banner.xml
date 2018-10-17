@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.BannerMapper">
+<!--  
+	实体类banner属性:  bannerId bannerName bannerType bannerSrc bannerLink modifier issuer addTime changeTime
+	bannerOrder bannerSet 
+	表tb_banner : banner_id banner_name banner_type banner_src  banner_link
+	banner_issuer banner_modifier banner_addtime banner_changetime banner_order
+	banner_set
+-->
+	<sql id="bannerColumns">banner_name,banner_type,banner_src,banner_link,banner_issuer,banner_modifier,banner_addtime,banner_changetime,banner_order,banner_set</sql>
+	<resultMap type="Banner" id="BannerResultMap">
+		<id column="banner_id" property="bannerId"/>
+		<result column="banner_name" property="bannerName"/>
+		<result column="banner_type" property="bannerType"/>
+		<result column="banner_src" property="bannerSrc"/>
+		<result column="banner_link" property="bannerLink"/>
+		<result column="banner_issuer" property="issuer"/>
+		<result column="banner_modifier" property="modifier"/>
+		<result column="banner_addtime" property="addTime"/>
+		<result column="banner_changetime" property="changeTime"/>
+		<result column="banner_order" property="bannerOrder"/>
+		<result column="banner_set" property="bannerSet"/>
+	</resultMap>
+	<!--获取数据  -->
+	<select id="listPageBanner" parameterType="Banner" resultMap="BannerResultMap">
+		select * from tb_banner 
+		<where>
+			<if test="bannerName!=null and bannerName!=''">
+				and banner_name=#{bannerName}
+			</if>
+		</where>
+		order by banner_order,banner_set
+	</select>
+	<!-- 添加数据 -->
+	<insert id="insertBanner" parameterType="Banner" useGeneratedKeys="true">
+		insert into tb_banner(<include refid="bannerColumns"></include>) values
+		(#{bannerName},#{bannerType},#{bannerSrc},#{bannerLink},#{issuer},
+		#{modifier},#{addTime},#{changeTime},#{bannerOrder},#{bannerSet})
+	</insert>
+	<!-- 更新数据 -->
+	<update id="updateBanner" parameterType="Banner">
+		update tb_banner set 
+		banner_name=#{bannerName},
+		banner_type=#{bannerType},
+		banner_src=#{bannerSrc},
+		banner_link=#{bannerLink},
+		banner_issuer=#{issuer},
+		banner_modifier=#{modifier},
+		banner_addtime=#{addTime},
+		banner_changetime=#{changeTime},
+		banner_order=#{bannerOrder},
+		banner_set=#{bannerSet}
+		where banner_id=#{bannerId}
+	</update>
+	<!-- 获取类型列表 -->
+	<select id="getBannerTypeList" resultType="string">
+		select distinct banner_type from tb_banner 
+	</select>
+	<!-- 删除数据 -->
+	<delete id="deleteBanner" parameterType="int">
+		delete from tb_banner where banner_id=#{bannerId}
+	</delete>
+	<!-- 设置置顶 -->
+	<update id="updateBannerSetTop" parameterType="int">
+		update tb_banner set banner_set=1 where banner_id=#{bannerId}
+	</update>
+	<!-- 取消置顶 -->
+	<update id="updateBannerSetunTop" parameterType="int">
+		update tb_banner set banner_set=2 where banner_id=#{bannerId}
+	</update>
+	<!-- 根据bannerid获取数据
+	Banner getBannerById(int bannerId); -->
+	<select id="getBannerById" parameterType="int" resultMap="BannerResultMap">
+		select * from tb_banner where banner_id=#{bannerId}
+	</select>
+</mapper>

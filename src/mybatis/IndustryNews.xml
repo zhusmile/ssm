@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.IndustryNewsMapper">
+	<resultMap type="IndustryNews" id="IndustryNewsResultMap">
+		<id column="in_id" property="inId"/>
+		<result column="in_title" property="inTitle"/>
+		<result column="in_abstract" property="inAbstract"/>
+		<result column="in_order" property="inOrder"/>
+		<result column="in_content" property="inContent"/>
+		<result column="in_publishtime" property="inPublishTime"/>
+		<result column="in_source" property="inSource"/>
+		<result column="in_publish" property="inPublish"/>
+		<result column="in_type" property="inType"/>
+		<result column="in_settop" property="inSetTop"/>
+		<result column="in_modifytime" property="inModifyTime"/>
+		<result column="in_createtime" property="inCreateTime"/>
+	</resultMap>
+	<!-- 
+			//获取数据
+	List<IndustryNews> listPageIndustryNews(IndustryNews in);
+	//添加数据
+	void insertIndustryNews(IndustryNews in);
+	//修改数据
+	void updateIndustryNews(IndustryNews in);
+	//删除数据
+	void deleteIndustryNews(int inId);
+	//根据id查找数据
+	IndustryNews getIndustryNewsById(int inId);
+	//置顶
+	void updateIndustryNewsSetTop(int inId);
+	//取消置顶
+	void updateIndustryNewsSetUnTop(int inId);
+	//发布
+	void updateIndustryNewsPublish(int inId);
+	//取消发布
+	void updateIndustryNewsUnPublish(int inId);
+		//查找同标题数据
+	int getCountBynTitle(String inTitle);
+	 -->
+<select id="listPageIndustryNews" parameterType="IndustryNews" resultMap="IndustryNewsResultMap">
+	select * from tb_industrynews
+	<where>
+		<if test="inTitle!=null and inTitle!=''">
+		 	in_title like "%"#{inTitle}"%"
+		</if>
+		<if test="inType!=null and inType!=''">
+			and in_type=#{inType}
+		</if>
+		<if test="inSetTop!=null">
+			and in_settop=#{inSetTop}
+		</if>
+		<if test="inPublish!=null">
+			and in_publish=#{inPublish}
+		</if>
+	</where>
+		order by in_settop,in_publish,in_modifytime
+</select>
+<insert id="insertIndustryNews" parameterType="IndustryNews" useGeneratedKeys="true">
+	insert into tb_industrynews(in_title,in_abstract,in_order,in_content,in_publishtime,in_source,in_type,in_createtime)
+	values(#{inTitle},#{inAbstract},#{inOrder},#{inContent},#{inPublishTime},#{inSource},#{inType},#{inCreateTime})
+</insert>
+<update id="updateIndustryNews" parameterType="IndustryNews">
+	update tb_industrynews set
+	in_title=#{inTitle},
+	in_abstract=#{inAbstract},
+	in_order=#{inOrder},
+	in_content=#{inContent},
+	in_publishtime=#{inPublishTime},
+	in_source=#{inSource},
+	in_modifytime=#{inModifyTime},
+	in_type=#{inType}
+	where 
+	in_id=#{inId}
+</update>
+<delete id="deleteIndustryNews" parameterType="int">
+	delete from tb_industrynews where in_id=#{inId}
+</delete>
+<select id="getIndustryNewsById" parameterType="int" resultMap="IndustryNewsResultMap">
+	select * from tb_industrynews where in_id=#{inId} 
+</select>
+<update id="updateIndustryNewsSetTop" parameterType="int">
+	update tb_industrynews set in_settop=0 where in_id=#{inId}
+</update>
+<update id="updateIndustryNewsSetUnTop" parameterType="int">
+	update tb_industrynews set in_settop=1 where in_id=#{inId}
+</update>
+<update id="updateIndustryNewsPublish" parameterType="int">
+	update tb_industrynews set in_publish=0 where in_id=#{inId}
+</update>
+<update id="updateIndustryNewsUnPublish" parameterType="int">
+	update tb_industrynews set in_publish=1 where in_id=#{inId}
+</update>
+<select id="getCountByinTitle" parameterType="string" resultType="int">
+	select count(*) from tb_industrynews where in_title=#{inTitle}
+</select>
+</mapper>

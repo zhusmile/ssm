@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.flf.mapper.IndustrialParkMapper">
+		<resultMap type="IndustrialPark" id="IndustrialParkResultMap">
+			<id column="ip_id" property="ipId"/>		
+			<result column="ip_name" property="ipName"/>
+			<result column="ip_order" property="ipOrder"/>
+			<result column="ip_link" property="ipLink"/>
+			<result column="ip_img" property="ipImg"/>
+			<result column="ip_settop" property="ipSetTop"/>
+		</resultMap>
+	
+	<!--  
+			//获取数据列表
+	List<IndustrialPark> listPageIndustrialPark(IndustrialPark ip);
+	//添加数据
+	void insertIndustrialPark(IndustrialPark ip);
+	//修改数据
+	void updateIndustrialPark(IndustrialPark ip);
+	//删除数据
+	void deleteIndustrialPark(int ipId);
+	//置顶
+	void updateIndustrialParkSetTop(int ipId);
+	//取消置顶
+	void updateIndustrialParkSetUnTop(int ipId);
+	//根据id获取数据
+	IndustrialPark getIndustrialParkById(int ipId);
+	//统计同名数据条数
+	int getCountByName(String ipName);
+	-->
+	<select id="listPageIndustrialPark" parameterType="IndustrialPark" resultMap="IndustrialParkResultMap">
+		select * from tb_industrialpark 
+		<if test="ipName!=null and ipName!=''">
+			where ip_name like "%"#{ipName}"%"
+		</if>
+		order by ip_settop,ip_order
+	</select>
+	<insert id="insertIndustrialPark" parameterType="IndustrialPark" useGeneratedKeys="true">
+		insert into tb_industrialpark(ip_name,ip_order,ip_link,ip_img,ip_settop)
+		values(#{ipName},#{ipOrder},#{ipLink},#{ipImg},1)
+	</insert>
+	<update id="updateIndustrialPark" parameterType="IndustrialPark">
+		update tb_industrialpark set
+		ip_name=#{ipName},
+		ip_order=#{ipOrder},
+		ip_link=#{ipLink},
+		ip_img=#{ipImg}
+		where ip_id=#{ipId}
+	</update>
+	<delete id="deleteIndustrialPark" parameterType="int">
+		delete from tb_industrialpark where ip_id=#{ipId}
+	</delete>
+	<update id="updateIndustrialParkSetTop" parameterType="int">
+		update tb_industrialpark set ip_settop=0 where ip_id=#{ipId}
+	</update>
+	<update id="updateIndustrialParkSetUnTop">
+		update tb_industrialpark set ip_settop=1 where ip_id=#{ipId}
+	</update>
+	<select id="getIndustrialParkById" parameterType="int" resultMap="IndustrialParkResultMap">
+		select * from tb_industrialpark where ip_id=#{ipId}
+	</select>
+	<select id="getCountByName" parameterType="string" resultType="int">
+		select count(*) from tb_industrialpark where ip_name=#{ipName}
+	</select>
+	</mapper>

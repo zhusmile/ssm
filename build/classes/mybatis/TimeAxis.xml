@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.TimeAxisMapper">
+<select id="listPageTimeAxis" parameterType="TimeAxis" resultType="TimeAxis">
+	select t_id as tId,t_name as tName from tb_timeaxis 
+	<if test="tName!=null and tName!=''">where t_name like "%"#{tName}"%"</if>
+</select>
+<insert id="insertTimeAxis" parameterType="TimeAxis" useGeneratedKeys="true">
+	insert into tb_timeaxis(t_name)
+	values(#{tName})
+</insert>
+<update id="updateTimeAxis" parameterType="TimeAxis">
+	update tb_timeaxis set
+	t_name=#{tName}
+	where t_id=#{tId}
+</update>
+<delete id="deleteTimeAxis" parameterType="int">
+	delete from tb_timeaxis where t_id=#{tId}
+</delete>
+<select id="getTimeAxisById" parameterType="int" resultType="TimeAxis">
+	select t_id as tId,t_name as tName from tb_timeaxis where t_id=#{tId}
+</select>
+<select id="getCountByName" parameterType="string" resultType="int">
+	select count(*) from tb_timeaxis where t_name=#{tName}
+</select>
+</mapper>

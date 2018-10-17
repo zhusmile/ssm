@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.SubjectClassficationMapper">
+	<!-- 
+			//获取or查找
+	List<SubjectClassfication> listPageSubjectClassfication(SubjectClassfication subjectClassfication);
+	//添加
+	void insertSubjectClassfication(SubjectClassfication subjectClassfication);
+	//修改
+	void updateSubjectClassfication(SubjectClassfication subjectClassfication);
+	//删除
+	void deleteSubjectClassfication(int sId);
+	//根据id获取
+	SubjectClassfication getSubjectClassficationById(int sId);
+	//查找同名数据条数
+	int getCountByName(String sName);
+	List<SubjectClassfication> getSubList();
+	 -->
+<select id="listPageSubjectClassfication" parameterType="SubjectClassfication" resultType="SubjectClassfication">
+	select s_id as sId,s_name as sName from tb_subjectclassfication 
+	<if test="sName!=null and sName!=''">where s_name like "%"#{sName}"%"</if>
+</select>
+<insert id="insertSubjectClassfication" parameterType="SubjectClassfication" useGeneratedKeys="true">
+	insert into tb_subjectclassfication(s_name)
+	values(#{sName})
+</insert>
+<update id="updateSubjectClassfication" parameterType="SubjectClassfication">
+	update tb_subjectclassfication set
+	s_name=#{sName}
+	where s_id=#{sId}
+</update>
+<delete id="deleteSubjectClassfication" parameterType="int">
+	delete from tb_subjectclassfication where s_id=#{sId}
+</delete>
+<select id="getSubjectClassficationById" parameterType="int" resultType="SubjectClassfication">
+	select s_id as sId,s_name as sName from tb_subjectclassfication where s_id=#{sId}
+</select>
+<select id="getCountByName" parameterType="string" resultType="int">
+	select count(*) from tb_subjectclassfication where s_name=#{sName}
+</select>
+<select id="getSubList" resultType="SubjectClassfication">
+	select s_id as sId,s_name as sName from tb_subjectclassfication
+</select>
+</mapper>

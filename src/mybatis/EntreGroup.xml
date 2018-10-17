@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.EntreGroupMapper">
+<!-- 实体类entregroup 属性 egId,egName,egIssuer,egAddTime,egModifier,egChangeTime,egOrder,egSetTop
+	   表tb_entreGroup 字段eg_id,eg_name,eg_issuer,eg_addTime,eg_modifier,eg_changeTime,eg_order,eg_setTop
+ -->
+<sql id="entreGroupColumns">eg_name,eg_issuer,eg_addTime,eg_modifier,eg_changeTime,eg_order,eg_setTop,eg_src</sql>
+<resultMap type="EntreGroup" id="EntreGroupResultMapper">
+	<id column="eg_id" property="egId"/>
+	<result column="eg_name" property="egName"/>
+	<result column="eg_issuer" property="egIssuer"/>
+	<result column="eg_addTime" property="egAddTime"/>
+	<result column="eg_modifier" property="egModifier"/>
+	<result column="eg_changeTime" property="egChangeTime"/>
+	<result column="eg_order" property="egOrder"/>
+	<result column="eg_setTop" property="egSetTop"/>
+	<result column="eg_src" property="egSrc"/>
+</resultMap>
+<!-- 
+		//获取信息
+	List<EntreGroup> listPageEntreGroup(EntreGroup entreGroup);
+	//添加信息
+	void insertEntreGroup(EntreGroup entreGroup);
+	//删除信息
+	void deleteEntreGroupById(int egId);
+	//通过id 获取信息
+	EntreGroup getEntreGroupById(int egId);
+	//更新信息
+	void updateEntreGroup(EntreGroup entreGroup);
+	//设置置顶
+	void updateEntreGroupSetTop(int egId);
+	//取消置顶
+	void updateEntreGroupSetunTop(int egId);
+ -->
+ <!-- 获取信息 -->
+ <select id="listPageEntreGroup" parameterType="EntreGroup" resultMap="EntreGroupResultMapper">
+ 	select * from tb_entreGroup
+ 	<where>
+ 		<if test="egName!=null and egName!=''">
+ 			and eg_name=#{egName}
+ 		</if>
+ 	</where>
+ 	order by eg_order,eg_setTop
+ </select>
+ <!-- 添加信息 -->
+ <insert id="insertEntreGroup" parameterType="EntreGroup" useGeneratedKeys="true">
+ 	insert into tb_entreGroup(<include refid="entreGroupColumns"></include>)
+ 	values(#{egName},#{egIssuer},#{egAddTime},#{egModifier},#{egChangeTime},#{egOrder},#{egSetTop},#{egSrc})
+ </insert>
+ <!-- 删除信息 -->
+ <delete id="deleteEntreGroupById" parameterType="int">
+ delete from tb_entreGroup where eg_id=#{egId}
+ </delete>
+ <!-- 更新信息 -->
+ <update id="updateEntreGroup" parameterType="EntreGroup">
+ 	update tb_entreGroup set
+ 	eg_name=#{egName},
+ 	eg_src=#{egSrc},
+ 	eg_modifier=#{egModifier},
+ 	eg_changeTime=#{egChangeTime},
+ 	eg_order=#{egOrder}
+ 	where eg_id=#{egId}
+ </update>
+ <!-- 通过id获取信息 -->
+ <select id="getEntreGroupById" parameterType="int" resultMap="EntreGroupResultMapper">
+ 	select * from tb_entreGroup where eg_id=#{egId}
+ </select>
+ <!-- 设置置顶 -->
+ <update id="updateEntreGroupSetTop" parameterType="int">
+ 	update tb_entreGroup set eg_setTop=1 where eg_id=#{egId}
+ </update>
+ <!-- 取消置顶 -->
+  <update id="updateEntreGroupSetunTop" parameterType="int">
+ 	update tb_entreGroup set eg_setTop=2 where eg_id=#{egId}
+ </update>
+ <!-- 查看name是否唯一 -->
+ <select id="getCountOfName" parameterType="string" resultType="int">
+	select count(*) from tb_entreGroup where eg_name=#{egName} 
+ </select>
+  <select id="getEGList" resultMap="EntreGroupResultMapper">
+ 	select * from tb_entreGroup
+ 	order by eg_order,eg_setTop
+ </select>
+</mapper>

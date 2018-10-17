@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.QrCodeMapper">
+	<resultMap type="QrCode" id="qrCodeResultMap">
+		<id column="code_id" property="codeId"/>
+		<result column="code_src" property="codeSrc"/>
+	</resultMap>
+	<update id="updateQrCode" parameterType="QrCode">
+		update tb_qrCode set
+		code_src=#{codeSrc}
+		where code_id=#{codeId}
+	</update>
+	<select id="listAllQrCode" resultMap="qrCodeResultMap">
+		select * from tb_qrCode 
+	</select>
+</mapper>

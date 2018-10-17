@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.InstitutionMapper">
+
+<!-- 
+	getInstitutionList();
+ -->
+ <resultMap type="Institution" id="InstitutionResultMap">
+ 	<id column="i_id" property="inId"/>
+ 	<result column="i_name" property="inName"/>
+ </resultMap>
+<!-- <select id="getInstitutionList" resultType="Institution">
+	select  i_id inId,i_name inName  from tb_institution 
+</select> -->
+<select id="getInstitutionList" resultMap="InstitutionResultMap">
+	select  *  from tb_institution 
+</select>
+</mapper>

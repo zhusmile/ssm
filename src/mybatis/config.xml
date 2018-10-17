@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.flf.entity.User" alias="User"/>
+		<typeAlias type="com.flf.entity.Page" alias="Page"/>
+		<typeAlias type="com.flf.entity.Role" alias="Role"/>
+		<typeAlias type="com.flf.entity.Menu" alias="Menu"/>
+		<typeAlias type="com.flf.entity.Student" alias="Student"/>
+		<typeAlias type="com.flf.entity.QrCode" alias="QrCode"/>
+		<typeAlias type="com.flf.entity.Banner" alias="Banner"/>
+		<typeAlias type="com.flf.entity.EntreGroup" alias="EntreGroup"/>
+		<typeAlias type="com.flf.entity.Advert" alias="Advert"/>
+		<typeAlias type="com.flf.entity.Fadvert" alias="Fadvert"/>
+		<typeAlias type="com.flf.entity.Information" alias="Information"/>
+		<typeAlias type="com.flf.entity.Organization" alias="Organization"/>
+		<typeAlias type="com.flf.entity.GeneralAdvert" alias="GeneralAdvert"/>
+		<typeAlias type="com.flf.entity.Achievement" alias="Achievement"/>
+		<typeAlias type="com.flf.entity.Dynamic" alias="Dynamic"/>
+		<typeAlias type="com.flf.entity.Area" alias="Area"/>
+		<typeAlias type="com.flf.entity.Base" alias="Base"/>
+		<typeAlias type="com.flf.entity.Institution" alias="Institution"/>
+		<typeAlias type="com.flf.entity.Media" alias="Media"/>
+		<typeAlias type="com.flf.entity.Activity" alias="Activity"/>
+		<typeAlias type="com.flf.entity.Mascot" alias="Mascot"/>
+		<typeAlias type="com.flf.entity.ActivityClass" alias="ActivityClass"/>
+		<typeAlias type="com.flf.entity.Guest" alias="Guest"/>
+		<typeAlias type="com.flf.entity.ExhibitionRoom" alias="ExhibitionRoom"/>
+		<typeAlias type="com.flf.entity.News" alias="News"/>
+		<typeAlias type="com.flf.entity.IndustryNews" alias="IndustryNews"/>
+		<typeAlias type="com.flf.entity.Ecosphere" alias="Ecosphere"/>
+		<typeAlias type="com.flf.entity.TimeAxis" alias="TimeAxis"/>	
+		<typeAlias type="com.flf.entity.Industry" alias="Industry"/>
+		<typeAlias type="com.flf.entity.SubjectClassfication" alias="SubjectClassfication"/>
+		<typeAlias type="com.flf.entity.PolicyClassfication" alias="PolicyClassfication"/>
+		<typeAlias type="com.flf.entity.IndustrialPark" alias="IndustrialPark"/>
+		<typeAlias type="com.flf.entity.Policy" alias="Policy"/>
+		<typeAlias type="com.flf.entity.Note" alias="Note"/>
+		<typeAlias type="com.flf.entity.State" alias="State"/>
+		<typeAlias type="com.flf.entity.Assessment" alias="Assessment"/>
+	</typeAliases>
+	<!-- 实现分页的效果 属性值pagesql 必须和xml文件的sql语句的id内容匹配 -->
+	<plugins>
+		<plugin interceptor="com.flf.plugin.PagePlugin">
+			<property name="dialect" value="mysql"/>
+			<property name="pageSqlId" value=".*listPage.*"/>
+		</plugin>
+	</plugins>
+	
+	<mappers>
+		<mapper resource="mybatis/User.xml"/>
+		<mapper resource="mybatis/Role.xml"/>
+		<mapper resource="mybatis/Menu.xml"/>
+		<mapper resource="mybatis/Student.xml"/>
+		<mapper resource="mybatis/QrCode.xml"/>
+		<mapper resource="mybatis/Banner.xml"/>
+		<mapper resource="mybatis/EntreGroup.xml"/>
+		<mapper resource="mybatis/Advert.xml"/>
+		<mapper resource="mybatis/Fadvert.xml"/>
+		<mapper resource="mybatis/Information.xml"/>
+		<mapper resource="mybatis/Organization.xml"/>
+		<mapper resource="mybatis/GeneralAdvert.xml"/>
+		<mapper resource="mybatis/Achievement.xml"/>
+		<mapper resource="mybatis/Dynamic.xml"/>
+		<mapper resource="mybatis/Area.xml"/>
+		<mapper resource="mybatis/Base.xml"/>
+		<mapper resource="mybatis/Institution.xml"/>
+		<mapper resource="mybatis/Media.xml"/>
+		<mapper resource="mybatis/Activity.xml"/>
+		<mapper resource="mybatis/Mascot.xml"/>
+		<mapper resource="mybatis/ActivityClass.xml"/>
+		<mapper resource="mybatis/Guest.xml"/>
+		<mapper resource="mybatis/ExhibitionRoom.xml"/>
+		<mapper resource="mybatis/News.xml"/>
+		<mapper resource="mybatis/IndustryNews.xml"/>
+		<mapper resource="mybatis/Ecosphere.xml"/>
+		<mapper resource="mybatis/TimeAxis.xml"/>
+		<mapper resource="mybatis/Industry.xml"/>
+		<mapper resource="mybatis/SubjectClassfication.xml"/>
+		<mapper resource="mybatis/PolicyClassfication.xml"/>
+		<mapper resource="mybatis/IndustrialPark.xml"/>
+		<mapper resource="mybatis/Policy.xml"/>
+		<mapper resource="mybatis/Note.xml"/>
+		<mapper resource="mybatis/State.xml"/>
+		<mapper resource="mybatis/Assessment.xml"/>
+	</mappers>
+</configuration>

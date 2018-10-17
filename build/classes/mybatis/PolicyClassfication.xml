@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.PolicyClassficationMapper">
+	<!-- 
+			//获取or查找
+	List<PolicyClassfication> listPagePolicyClassfication(PolicyClassfication pc);
+	//添加
+	void insertPolicyClassfication(PolicyClassfication pc);
+	//修改
+	void updatePolicyClassfication(PolicyClassfication pc);
+	//删除
+	void deletePolicyClassfication(int pId);
+	//根据id获取
+	PolicyClassfication getPolicyClassficationById(int pId);
+	//查找同名数据条数
+	int getCountByName(String pName);
+	 -->
+<select id="listPagePolicyClassfication" parameterType="PolicyClassfication" resultType="PolicyClassfication">
+	select p_id as pId,p_name as pName from tb_policyclassfication 
+	<if test="pName!=null and pName!=''">where p_name like "%"#{pName}"%"</if>
+</select>
+<insert id="insertPolicyClassfication" parameterType="PolicyClassfication" useGeneratedKeys="true">
+	insert into tb_policyclassfication(p_name)
+	values(#{pName})
+</insert>
+<update id="updatePolicyClassfication" parameterType="PolicyClassfication">
+	update tb_policyclassfication set
+	p_name=#{pName}
+	where p_id=#{pId}
+</update>
+<delete id="deletePolicyClassfication" parameterType="int">
+	delete from tb_policyclassfication where p_id=#{pId}
+</delete>
+<select id="getPolicyClassficationById" parameterType="int" resultType="PolicyClassfication">
+	select p_id as pId,p_name as pName from tb_policyclassfication where p_id=#{pId}
+</select>
+<select id="getCountByName" parameterType="string" resultType="int">
+	select count(*) from tb_policyclassfication where p_name=#{pName}
+</select>
+<select id="getPCList"  resultType="PolicyClassfication">
+	select p_id as pId,p_name as pName from tb_policyclassfication 
+</select>
+</mapper>

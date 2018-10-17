@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.NoteMapper">
+	<!-- 
+		//获取note
+	Note getNote();
+	//修改note
+	void updateNote(Note note);
+	 -->
+	 <select id="getNote" resultType="Note">
+	 	select n_id as nId,n_content as nContent from tb_note where n_id=1
+	 </select>
+	 <update id="updateNote" parameterType="Note">
+	 	update tb_note set n_content=#{nContent} where n_id=#{nId}
+	 </update>
+</mapper>

@@ -1,0 +1,110 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    font-family: Î¢ÈíÑÅºÚ;
+}
+body {
+    background: url(../images/bg.gif) no-repeat center 0;
+    background-size: 100% 683px;
+    min-width: 1300px;
+}
+a{
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+.main{
+    background: url(../images/bg.gif) no-repeat center 0;
+    background-size: 100% 683px;
+    width: 100% !important;
+    min-width: 1300px;
+}
+.center {
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    min-height: 685px;
+}
+.index {
+    height: 41px;
+    line-height: 41px;
+    margin: 0 15px 0 14px;
+    padding-left: 21px;
+    width: 1150px;
+    background: url(../images/index.png) no-repeat 0px 13px;
+    background-size: 16px 14px;
+    border-bottom: 1px solid #dedede;
+}
+.index a.ind1 {
+    background: none;
+    padding-left: 0;
+    color: #2d6393;
+}
+.index a {
+    float: left;
+    display: inline-block;
+    color: #353333;
+    background: url(../images/dayu.png) no-repeat 7px 15px;
+    background-size: 6px 12px;
+    padding-left: 21px;
+    font-size: 14px;
+}
+.index a:last-child {
+    color: #353333;
+}
+.dtxq-article-container {
+    padding: 0 118px;
+}
+.dtxq-title-container {
+    padding: 0 32px;
+    padding-top: 30px;
+    padding-bottom: 15px;
+}
+.gray {
+    color: #777!important;
+}
+.dtxq-title-container .tongji {
+    margin-bottom: 16px;
+}
+.dtxq-title-container .tongji label {
+    font-size: 14px;
+    color: #2b2b2b;
+}
+.dtxq-title-container .tongji .label1 {
+    margin-right: 32px;
+}
+.dtxq-title-container .tongji label {
+    font-size: 14px;
+    color: #2b2b2b;
+}
+.dtxq-title-container .tongji .label4 {
+    float: right;
+}
+.dtxq-title-container .tongji .label3 {
+    width: 60px;
+    height: 140px;
+    position: fixed;
+    left: 50%;
+    top: 249px;
+    margin: 0;
+    margin-left: -552px;
+    clear: both;
+    text-align: center;
+    z-index: 51;
+}
+
+.dtxq-title-container .biaoti {
+    font-size: 30px;
+    font-weight: bold;
+    color: #2b2b2b;
+    text-align: center;
+}
+.dtxq-article-content {
+    padding: 0 51px 40px;
+    border-bottom: 1px solid #dedede;
+    min-height: 200px;
+    position: relative;
+}

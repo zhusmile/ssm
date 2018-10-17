@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.AdvertMapper">
+<!--  
+	实体类Advert属性:  adId adName adSrc adLink  adIssuer adAddTime adModifier adChangeTime
+	adOrder adSetTop 
+	表tb_Advert : ad_id ad_name  ad_src  ad_link
+	ad_issuer  ad_addTime  ad_modifier ad_changeTime ad_order
+	ad_setTop
+-->
+<sql id="advertColumns">ad_name,ad_src,ad_link,ad_issuer,ad_addTime,ad_modifier,ad_changeTime,ad_order,ad_setTop</sql>
+<resultMap type="Advert" id="AdvertResultMap">
+	<id column="ad_id" property="adId"/>
+	<result column="ad_name" property="adName"/>
+	<result column="ad_src" property="adSrc"/>
+	<result column="ad_link" property="adLink"/>
+	<result column="ad_issuer" property="adIssuer"/>
+	<result column="ad_addTime" property="adAddTime"/>
+	<result column="ad_modifier" property="adModifier"/>
+	<result column="ad_changeTime" property="adChangeTime"/>
+	<result column="ad_order" property="adOrder"/>
+	<result column="ad_setTop" property="adSetTop"/>
+</resultMap>
+<!-- 获取数据列表 -->
+<select id="listPageAdvert"  parameterType="Advert" resultMap="AdvertResultMap">
+	select * from tb_advertisement order by ad_order,ad_setTop
+</select>
+<!-- 添加数据 -->
+<insert id="insertAdvert" parameterType="Advert" useGeneratedKeys="true">
+	insert into tb_advertisement(<include refid="advertColumns"></include>)
+	values(#{adName},#{adSrc},#{adLink},#{adIssuer},#{adAddTime},#{adModifier},#{adChangeTime},#{adOrder},#{adSetTop})
+</insert>
+<!-- 修改数据 -->
+<update id="updateAdvert" parameterType="Advert">
+	update tb_advertisement set
+	<if test="adSrc!=null and adSrc!=''">ad_src=#{adSrc},</if>	
+	<if test="adLink!=null and adLink!=''">ad_link=#{adLink},</if>	
+	<if test="adIssuer!=null and adIssuer!=''">ad_issuer=#{adIssuer},</if>	
+	<if test="adAddTime!=null and adAddTime!=''">ad_addTime=#{adAddTime},</if>	
+	<if test="adModifier!=null and adModifier!=''">ad_modifier=#{adModifier},</if>	
+	<if test="adChangeTime!=null and adChangeTime!=''">ad_changeTime=#{adChangeTime},</if>	
+	<if test="adOrder!=null and adOrder!=''">ad_order=#{adOrder},</if>
+	ad_name=#{adName}
+	where ad_id=#{adId}
+</update>
+<!-- 删除数据 -->
+<delete id="deleteAdvert" parameterType="int">
+	delete from tb_advertisement where ad_id=#{adId}
+</delete>
+<!-- 置顶 -->
+<update id="updateAdvertSetTop" parameterType="int"> 
+	update tb_advertisement set ad_setTop=1 where ad_id=#{adId}
+</update>
+<!-- 取消置顶 -->
+<update id="updateAdvertSetUnTop" parameterType="int"> 
+	update tb_advertisement set ad_setTop=2 where ad_id=#{adId}
+</update>
+<!-- 根据id获取数据 -->
+<select id="getAdvertById" parameterType="int" resultMap="AdvertResultMap">
+select * from tb_advertisement where ad_id=#{adId}
+</select>
+</mapper>

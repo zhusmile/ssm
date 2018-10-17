@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.PolicyMapper">
+	<resultMap type="Policy" id="PolicyResultMap">
+		<id column="p_id" property="pId"/>
+		<result column="p_title" property="pTitle"/>
+		<result column="p_issueorg" property="pIssueOrg"/>
+		<result column="p_ecosphere" property="pEcosphere"/>
+		<result column="p_belong" property="pBelong"/>
+		<result column="p_classfication" property="pClassfication"/>
+		<result column="p_service" property="pService"/>
+		<result column="p_abstract" property="pAbstract"/>
+		<result column="p_interviewvideosrc" property="pInterviewvideoSrc"/>
+		<result column="p_guest" property="pGuest"/>
+		<result column="p_index" property="pIndex"/>
+		<result column="p_issuer" property="pIssuer"/>
+		<result column="p_theclassfication" property="pTheClassfication"/>
+		<result column="p_timeaxis" property="pTimeAxis"/>
+		<result column="p_area" property="pArea"/>
+		<result column="p_entregroup" property="pEntreGroup"/>
+		<result column="p_industry" property="pIndustry"/>
+		<result column="p_order" property="pOrder"/>
+		<result column="p_interviewtime" property="pInterviewTime"/>
+		<result column="p_interviewabstract" property="pInterviewAbstract"/>
+		<result column="p_content" property="pContent"/>
+		<result column="p_issuetime" property="pIssueTime"/>
+		<result column="p_modifier" property="pModifier"/>
+		<result column="p_modifytime" property="pModifyTime"/>
+		<result column="p_settop" property="pSetTop"/>
+		<result column="p_publish" property="pPublish"/>
+		<result column="p_interviewimg" property="pInterviewImg"/>
+		<result column="p_pageview" property="pageView"/>
+	</resultMap>
+	<!-- 
+			//添加数据
+	void insertPolicy(Policy policy);
+	//修改数据
+	void updatePolicy(Policy policy);
+	//删除数据
+	void deletePolicy(int pId);
+	//根据id查找数据
+	Policy getPolicyById(int pId);
+	//置顶
+	void updatePolicySetTop(int pId);
+	//取消置顶
+	void updatePolicySetUnTop(int pId);
+	//发布
+	void updatePolicyPublish(int pId);
+	//取消发布
+	void updatePolicyUnPublish(int pId);
+	//获取数据总量
+	int getPolicyCountByTitle();
+	//更新访问量
+	void updatePageView(int pId);
+	//获取部委数据
+	List<Policy> listPageBuWeiPolicy(Policy policy);
+	//获取地方数据
+	List<Policy> listPageDifangPolicy(Policy policy);
+	//按访问量获取数据
+	List<Policy> listPagePolicyOrderByPageView(Policy policy);
+	 -->
+	<select id="listPagePolicy" resultMap="PolicyResultMap" parameterType="Policy">
+		select * from tb_policy 
+		<where>
+			<if test="pTitle!=null and pTitle!=''">
+				p_title like "%"#{pTitle}"%"
+			</if>
+			<if test="pIndex!=null and pIndex!=''">
+				and p_index like "%"#{pIndex}"%"
+			</if>
+			<if test="pArea!=null and pArea!=''">
+				and p_area=#{pArea}
+			</if>
+			<if test="pSetTop!=null">
+				and p_settop=#{pSetTop}
+			</if>
+			<if test="pPublish!=null">
+				and p_publish=#{pPublish}
+			</if>
+			<if test="pIndustry!=null and pIndustry!=''">
+				and find_in_set(#{pIndustry},p_industry)
+			</if>
+			<if test="pTheClassfication!=null and pTheClassfication!=''">
+				and p_theclassfication=#{pTheClassfication}
+			</if>
+			<if test="pIssueOrg!=null and pIssueOrg!=''">
+				and find_in_set(#{pIssueOrg},p_issueorg)
+			</if>
+			<if test="searchStart!=null">
+				and p_issuetime&gt;#{searchStart}
+			</if>
+			<if test="searchEnd!=null">
+				and p_issuetime&lt;#{searchEnd}
+			</if>
+		</where>
+		order by p_settop,p_publish,IF(ISNULL(p_modifytime),1,0)  desc
+	</select>
+	<insert id="insertPolicy" parameterType="Policy" useGeneratedKeys="true">
+		insert into tb_policy(p_title,p_issueorg,p_ecosphere,p_belong,p_classfication,p_service,p_abstract,p_interviewvideosrc,p_guest,p_index,p_issuer,p_theclassfication,p_timeaxis,p_area,p_entregroup,p_industry,p_order,p_interviewtime,p_interviewabstract,p_content,p_issuetime,p_interviewimg)
+		values(#{pTitle},#{pIssueOrg},#{pEcosphere},#{pBelong},#{pClassfication},#{pService},#{pAbstract},#{pInterviewvideoSrc},#{pGuest},#{pIndex},#{pIssuer},#{pTheClassfication},#{pTimeAxis},#{pArea},#{pEntreGroup},#{pIndustry},#{pOrder},#{pInterviewTime},#{pInterviewAbstract},#{pContent},#{pIssueTime},#{pInterviewImg})
+	</insert>
+	<update id="updatePolicy" parameterType="Policy">
+		update tb_policy set
+		p_title=#{pTitle},
+		p_issueorg=#{pIssueOrg},
+		p_ecosphere=#{pEcosphere},
+		p_belong=#{pBelong},
+		p_classfication=#{pClassfication},
+		p_service=#{pService},
+		p_abstract=#{pAbstract},
+		p_interviewvideosrc=#{pInterviewvideoSrc},
+		p_guest=#{pGuest},
+		p_index=#{pIndex},
+		p_issuer=#{pIssuer},
+		p_theclassfication=#{pTheClassfication},
+		p_timeaxis=#{pTimeAxis},
+		p_area=#{pArea},
+		p_entregroup=#{pEntreGroup},
+		p_industry=#{pIndustry},
+		p_order=#{pOrder},
+		p_interviewtime=#{pInterviewTime},
+		p_interviewabstract=#{pInterviewAbstract},
+		p_content=#{pContent},
+		p_issuetime=#{pIssueTime},
+		p_interviewimg=#{pInterviewImg},
+		p_modifier=#{pModifier},
+		p_modifytime=#{pModifyTime}
+		where p_id=#{pId}
+	</update>
+	<delete id="deletePolicy" parameterType="int">
+		delete from tb_policy where p_id=#{pId}
+	</delete>
+	<select id="getPolicyById" parameterType="int" resultMap="PolicyResultMap">
+		select * from tb_policy where p_id=#{pId}
+	</select>
+	<update id="updatePolicySetTop" parameterType="int">
+		update tb_policy set p_settop=0 where p_id=#{pId}
+	</update>
+	<update id="updatePolicySetUnTop" parameterType="int">
+		update tb_policy set p_settop=1 where p_id=#{pId}
+	</update>
+	<update id="updatePolicyPublish" parameterType="int">
+		update tb_policy set p_publish=0 where p_id=#{pId}
+	</update>
+	<update id="updatePolicyUnPublish" parameterType="int">
+		update tb_policy set p_publish=1 where p_id=#{pId}
+	</update>
+	<select id="getPolicyCountByTitle" parameterType="String" resultType="int">
+		select count(*) from tb_policy where p_title=#{pTitle}
+	</select>
+	<select id="listPageBuWeiPolicy" parameterType="Policy" resultMap="PolicyResultMap">
+		select * from tb_policy where p_area=''
+	</select>
+	<select id="listPageDifangPolicy" parameterType="Policy" resultMap="PolicyResultMap">
+		select * from tb_policy where p_area!=''
+	</select>
+	<update id="updatePageView">
+		update tb_policy set 
+		p_pageview=p_pageview+#{count},
+		pageviewyear=pageviewyear+#{count},
+		pageviewseason=pageviewseason+#{count},
+		pageviewweek=pageviewweek+#{count},
+		pageviewmonth=pageviewmonth+#{count}
+		where p_id=#{id}
+	</update>
+	<update id="updatePageViewYear">
+		update tb_policy set pageviewyear=0
+	</update>
+	<update id="updatePageViewSeason">
+		update tb_policy set pageviewseason=0
+	</update>
+	<update id="updatePageViewMonth">
+		update tb_policy set pageviewmonth=0
+	</update>
+	<update id="updatePageViewWeek">
+		update tb_policy set pageviewweek=0
+	</update>
+	<select id="listPagePolicyOrderByPageView" parameterType="Policy" resultMap="PolicyResultMap">
+		select * from tb_policy order by p_pageview desc
+	</select>
+	<select id="getPolicyList" parameterType="Policy" resultMap="PolicyResultMap">
+		select * from tb_policy 
+		<where>
+			<if test="pIndex!=null and pIndex!=''">
+				 p_index like "%"#{pIndex}"%"
+			</if>
+			<if test="pArea!=null and pArea!=''">
+				and p_area like "%"#{pArea}"%"
+			</if>
+			<if test="pEntreGroup!=null and pEntreGroup!=''">
+				and find_in_set(#{pEntreGroup},p_entregroup)
+			</if>
+			<if test="pClassfication!=null and pClassfication!=''">
+				and p_classfication like "%"#{pClassfication}"%"
+			</if>
+			<if test="pIndustry!=null and pIndustry!=''">
+				and find_in_set(#{pIndustry},p_industry)
+			</if>
+			<if test="pIssueOrg!=null and pIssueOrg!=''">
+				and find_in_set(#{pIssueOrg},p_issueorg)
+			</if>
+			<if test="searchStart!=null">
+				and p_issuetime&gt;#{searchStart}
+			</if>
+			<if test="searchEnd!=null">
+				and p_issuetime&lt;#{searchEnd}
+			</if>
+		</where>
+		order by p_issuetime desc,p_modifytime desc
+	</select>
+	<select id="searchPolicy" parameterType="string" resultMap="PolicyResultMap">
+		select * from tb_policy 
+		where concat(IFNULL(p_issueorg,''),IFNULL(p_abstract,''),IFNULL(p_title,'')) like "%"#{keyword}"%"
+		order by p_issuetime desc,p_modifytime desc
+	</select>
+	<select id="getHotsByCycle" parameterType="int" resultMap="PolicyResultMap">
+		select * from tb_policy
+		<if test="_parameter==0">
+			order by pageviewyear desc
+		</if>
+		<if test="_parameter==1">
+			order by pageviewseason desc
+		</if>
+		<if test="_parameter==2">
+			order by pageviewmonth desc
+		</if>
+		<if test="_parameter==3">
+			order by pageviewweek desc
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.StateMapper">
+<!-- 
+	//获取信息
+	List<State> listPageState(State state);
+	//添加信息
+	void insertState(State state);
+	//删除信息
+	void deleteStateById(int sId);
+	//通过id 获取信息
+	State getStateById(int sId);
+	//审核通过
+	void updateStateStatus(State state);
+	
+ -->
+ <resultMap type="State" id="StateResultMap">
+ 	<id column="s_id" property="sId"/>
+ 	<result column="s_name" property="sName"/>
+ 	<result column="s_unit" property="sUnit"/>
+ 	<result column="s_mp" property="sMp"/>
+ 	<result column="s_email" property="sEmail"/>
+ 	<result column="s_title" property="sTitle"/>
+ 	<result column="s_time" property="sTime"/>
+ 	<result column="s_status" property="sStatus"/>
+ 	<result column="s_content" property="sContent"/>
+ </resultMap>
+<select id="listPageState" parameterType="State" resultMap="StateResultMap">
+ 	select * from tb_state <where>
+ 	<if test="sStatus!=null">
+ 		s_status=#{sStatus}
+ 	</if>
+ 	</where>
+ 	order by s_status,s_time desc
+</select>
+<insert id="insertState" parameterType="State" useGeneratedKeys="true">
+ 	insert into tb_state(s_name,s_unit,s_mp,s_email,s_title,s_time,s_content)
+ 	values(#{sName},#{sUnit},#{sMp},#{sEmail},#{sTitle},#{sTime},#{sContent})
+</insert>
+<select id="getStateById" parameterType="int" resultMap="StateResultMap">
+	select * from tb_state where s_id=#{sId}
+</select>
+<delete id="deleteStateById" parameterType="int">
+	delete from tb_state where s_id=#{sId}
+</delete>
+<update id="updateStateStatus" parameterType="State">
+	update tb_state set s_status=#{sStatus} where s_id=#{sId}
+</update>
+</mapper>

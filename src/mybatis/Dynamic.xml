@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.DynamicMapper">
+<resultMap type="Dynamic" id="DynamicPlusResultMap">
+	<id column="dy_id" property="dyId"/>
+	<result column="dy_title" property="dyTitle"/>
+	<result column="dy_createtime" property="dyCreateTime"/>
+	<result column="dy_abstract" property="dyAbstract"/>
+	<result column="dy_issuer" property="dyIssuer"/>
+	<result column="dy_leader" property="dyLeader"/>
+	<result column="dy_base" property="dyBase"/>
+	<result column="dy_area" property="dyArea"/>
+	<result column="dy_caste" property="dyCaste"/>
+	<result column="dy_type" property="dyType"/>
+	<result column="dy_source" property="dySource"/>
+	<result column="dy_publish" property="dyPublish"/>
+	<result column="dy_publishtime" property="dyPublishTime"/>
+	<result column="dy_order" property="dyOrder"/>
+	<result column="dy_content" property="dyContent"/>
+	<result column="dy_setTop" property="dySetTop"/>
+	<result column="dy_img" property="dyImg"/>
+	<result column="dy_autopublishtime" property="dyAutoPublishTime"/>
+	<result column="i_name" property="dyIssuerName"/>
+	<result column="dy_pageview" property="dyPageView"/>
+</resultMap>
+<resultMap type="Dynamic" id="DynamicResultMap">
+	<id column="dy_id" property="dyId"/>
+	<result column="dy_title" property="dyTitle"/>
+	<result column="dy_createtime" property="dyCreateTime"/>
+	<result column="dy_abstract" property="dyAbstract"/>
+	<result column="dy_issuer" property="dyIssuer"/>
+	<result column="dy_leader" property="dyLeader"/>
+	<result column="dy_base" property="dyBase"/>
+	<result column="dy_area" property="dyArea"/>
+	<result column="dy_caste" property="dyCaste"/>
+	<result column="dy_type" property="dyType"/>
+	<result column="dy_source" property="dySource"/>
+	<result column="dy_publish" property="dyPublish"/>
+	<result column="dy_publishtime" property="dyPublishTime"/>
+	<result column="dy_order" property="dyOrder"/>
+	<result column="dy_content" property="dyContent"/>
+	<result column="dy_setTop" property="dySetTop"/>
+	<result column="dy_img" property="dyImg"/>
+	<result column="dy_autopublishtime" property="dyAutoPublishTime"/>
+	<result column="i_name" property="dyIssuerName"/>
+	<result column="dy_pageview" property="dyPageView"/>
+</resultMap>
+<sql id="dynamicColumns">dy_title,dy_abstract,dy_issuer,dy_leader,dy_base,dy_area,dy_caste,dy_type,dy_source,dy_publishtime,dy_order,dy_content,dy_img,dy_autopublishtime,dy_createtime</sql>
+<!-- 
+	//获取数据
+	List<Dynamic> listPageDynamic(Dynamic dy);
+	//添加数据
+	void insertDynamic(Dynamic dy);
+	//修改数据
+	void updateDynamic(Dynamic dy);
+	//删除数据
+	void deleteDynamic(int dyId);
+	//根据id查找数据
+	Dynamic getDynamicById(int dyId);
+	//置顶
+	void updateDynamicSetTop(int dyId);
+	//取消置顶
+	void updateDynamicSetUnTop(int dyId);
+	//发布
+	void updateDynamicPublish(int dyId);
+	//取消发布
+	void updateDynamicUnPublish(int dyId);
+	//获取数据总量
+	int getDynamicCount();
+ -->
+<select id="listPageDynamic" parameterType="Dynamic" resultMap="DynamicPlusResultMap">
+	select tb_dynamic.*,i_name from tb_dynamic left join tb_institution on dy_issuer=i_id
+		<where>
+		<if test="dyTitle!=null and dyTitle!=''">
+			dy_title like "%"#{dyTitle}"%"
+		</if>
+		<if test="dySetTop!=null">
+			and dy_setTop=#{dySetTop}
+		</if>
+		<if test="dyPublish!=null">
+			and dy_publish=#{dyPublish}
+		</if>
+		<if test="searchStart!=null">
+			and dy_createtime&gt;#{searchStart}
+		</if>
+		<if test="searchEnd!=null">
+			and dy_createtime&lt;#{searchEnd}
+		</if>	
+		</where>
+	order by dy_order,dy_setTop,dy_publish
+</select>
+<insert id="insertDynamic" parameterType="Dynamic" useGeneratedKeys="true">
+	insert into tb_dynamic(<include refid="dynamicColumns"></include>)
+	values(#{dyTitle},#{dyAbstract},#{dyIssuer},#{dyLeader},#{dyBase},#{dyArea},#{dyCaste},#{dyType},#{dySource},#{dyPublishTime},#{dyOrder},#{dyContent},#{dyImg},#{dyAutoPublishTime},#{dyCreateTime})
+</insert>
+<update id="updateDynamic" parameterType="Dynamic">
+	update tb_dynamic set
+	dy_title=#{dyTitle},
+	dy_abstract=#{dyAbstract},
+	dy_issuer=#{dyIssuer},
+	dy_leader=#{dyLeader},
+	dy_base=#{dyBase},
+	dy_area=#{dyArea},
+	dy_caste=#{dyCaste},
+	dy_type=#{dyType},
+	dy_source=#{dySource},
+	dy_publishtime=#{dyPublishTime},
+	dy_order=#{dyOrder},
+	dy_content=#{dyContent},
+	dy_img=#{dyImg},
+	dy_autopublishtime=#{dyAutoPublishTime}
+	where dy_id=#{dyId}
+</update>
+<delete id="deleteDynamic" parameterType="int">
+	delete from tb_dynamic where dy_id=#{dyId}
+</delete>
+<select id="getDynamicById" parameterType="int" resultMap="DynamicResultMap">
+	select * from tb_dynamic where dy_id=#{dyId}
+</select>
+<update id="updateDynamicSetTop" parameterType="int">
+	update tb_dynamic set dy_setTop=0 where dy_id=#{dyId}
+</update>
+<update id="updateDynamicSetUnTop" parameterType="int">
+	update tb_dynamic set dy_setTop=1 where dy_id=#{dyId}
+</update>
+<update id="updateDynamicPublish" parameterType="int">
+	update tb_dynamic set dy_publish=0 where dy_id=#{dyId}
+</update>
+<update id="updateDynamicUnPublish" parameterType="int">
+	update tb_dynamic set dy_publish=1 where dy_id=#{dyId}
+</update>
+<select id="getDynamicCount" resultType="int">
+	select count(*) from tb_dynamic
+</select>
+<select id="getDyList" parameterType="Dynamic" resultMap="DynamicResultMap">
+	select * from tb_dynamic
+ 	<where>
+		<if test="dyCaste!=null and dyCaste!=''">
+			dy_caste=#{dyCaste}
+		</if>
+		<if test="dyArea!=null and dyArea!=''">
+			and dy_area=#{dyArea}
+		</if>
+		<if test="dyIssuer!=null and dyIssuer!=''">
+			and dy_issuer!=0
+		</if>
+		<if test="dyBase!=null and dyBase!=''">
+			and dy_base!=0
+		</if>
+		<if test="dyType!=null">
+			and dy_type=#{dyType}
+		</if>
+	</where>
+	order by dy_settop,dy_order,dy_createtime desc
+</select>
+<select id="getAllDyList"  resultMap="DynamicResultMap">
+	select * from tb_dynamic where dy_publish=0 order by dy_settop,dy_order,dy_createtime
+</select>
+<select id="getBuWeiDyList"  resultMap="DynamicResultMap">
+	select * from tb_dynamic where dy_publish=0 order by if(isnull(dy_issuer),1,0),dy_settop,dy_order
+</select>
+<select id="getDiFangDyList"  resultMap="DynamicResultMap">
+	select * from tb_dynamic where dy_publish=0 order by if(isnull(dy_area),1,0),dy_settop,dy_order
+</select>
+<select id="getSHTTDyList" resultMap="DynamicResultMap">
+	select * from tb_dynamic where dy_publish=0 order by if(isnull(dy_caste),1,0),dy_settop,dy_order
+</select>
+<select id="getJidiDyList"  resultMap="DynamicResultMap">
+	select * from tb_dynamic where dy_publish=0 order by if(isnull(dy_base),1,0),dy_base,dy_settop,dy_order
+</select>
+<update id="updatePageView">
+	update tb_dynamic set dy_pageview=dy_pageview+#{count} where dy_id=#{id}
+</update>
+<select id="getDylistToBaseExpPage" parameterType="Base" resultMap="DynamicResultMap">
+	select tb_dynamic.* from tb_dynamic left join tb_base on dy_base=b_id where dy_base!=''
+	<if test="bBatch!=null">and b_batch=#{bBatch}</if>
+	<if test="bType!=null">and b_type=#{bType}</if>  
+</select>
+<select id="getDylistByBase" parameterType="int" resultMap="DynamicResultMap">
+	select * from tb_dynamic where dy_base=#{id}
+</select>
+</mapper>

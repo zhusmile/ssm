@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.AreaMapper">
+<resultMap type="Area" id="AreaResultMap">
+	<id column="a_id" property="aId"/>
+	<result column="a_name" property="aName"/>
+	<result column="a_order" property="aOrder"/>
+</resultMap>
+<select id="getAreaByName" parameterType="string" resultMap="AreaResultMap">
+	select * from tb_area where a_name=#{aName}
+</select>
+<select id="getAreaList" resultMap="AreaResultMap">
+	select * from tb_area
+</select>
+<select id="listPageArea" parameterType="Area" resultMap="AreaResultMap">
+	select * from tb_area
+	<if test="aName!=null and aName!=''">
+		where a_name like "%"#{aName}"%"
+	</if>
+	order by a_order
+</select>
+<insert id="insertArea" parameterType="Area" useGeneratedKeys="true">
+	insert into tb_area(a_name,a_order)
+	values(#{aName},#{aOrder})
+</insert>
+<update id="updateArea" parameterType="Area">
+	update tb_area set a_name=#{aName},a_order=#{aOrder} where a_id=#{aId}
+</update>
+<delete id="deleteArea" parameterType="int">
+	delete from tb_area where a_id=#{aId}
+</delete>
+<select id="getAreaById" parameterType="int" resultMap="AreaResultMap">
+	select * from tb_area where a_id=#{aId}
+</select>
+<select id="getCountByName" parameterType="string" resultType="int">
+	select count(*) from tb_area where a_name=#{aName}
+</select>
+</mapper>

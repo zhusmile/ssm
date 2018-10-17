@@ -1,0 +1,167 @@
+@charset "UTF-8";
+.actList {
+    width: 1200px;
+    min-height: 400px;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    background: #fff;
+}
+
+.indexWrap {
+    width: 1200px;
+    height: 42px;
+    margin: 0 auto;
+    background: #fff;
+    clear: both;
+}
+.tabs {
+    width: 1168px;
+    height: 49px;
+    background: #f5f5f5;
+    border: 1px solid #e5e5e5;
+}
+.listAll {
+    height: auto;
+    width: 1170px;
+    padding: 28px 15px 0;
+}
+.actList .tabs ul {
+    width: auto;
+    margin: 0 auto;
+}
+.tabs li {
+    position: relative;
+}
+.tabs li .current {
+    background: #fff;
+}
+.tabs li a {
+    display: inline-block;
+    font-size: 18px;
+    color: #2b2b2b;
+    float: left;
+    width: 137px;
+    height: 49px;
+    line-height: 49px;
+    text-align: center;
+    border-right: 1px solid #e5e5e5;
+    cursor: pointer;
+    position: relative;
+}
+.tabs li div {
+    display: none;
+    width: 260px;
+    height: auto;
+    position: absolute;
+    left: -1px;
+    top: 49px;
+    border: 1px solid #e5e5e5;
+    background: #fff;
+    line-height: 26px;
+    z-index: 5;
+}
+#city-list {
+    width: 300px;
+    max-height: 303px;
+    padding: 10px;
+    overflow-y: auto;
+}
+.tabs li div b {
+    height: 32px;
+    line-height: 32px;
+    font-size: 14px;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+.tabs li div b.on {
+    color: #fff;
+    background-color: #2d6393;
+}
+#shtt-list b {
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+}
+#shtt-list b {
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+}
+.tabs li a em {
+    font-size: 18px;
+    position: relative;
+}
+#city-list span.on {
+    color: #fff;
+    background-color: #2d6393;
+    border-radius: 3px;
+}
+#city-list span {
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-top: 10px;
+    padding: 2px 5px;
+    line-height: 16px;
+}
+
+.listCon, .listBox, #page {
+    width: 858px;
+}
+.listCon {
+    width: 1098px;
+    margin-left: 36px;
+    display: none;
+}
+.listBox {
+    width: 1098px;
+    height: 191px;
+    border-bottom: 1px dashed #f4f2f3;
+}
+.listBox a {
+    font-size: 18px;
+    color: #2d6393;
+    line-height: 1;
+    padding: 25px 0 24px;
+    display: block;
+    font-weight: bold;
+}
+.detailAll {
+    width: 100%;
+    clear: both;
+}
+.detailAll a {
+    float: left;
+    padding: 0;
+}
+.detailAll img {
+    width: 138px;
+    height: 107px;
+    float: left;
+    display: inline-block;
+}
+.detailAll>a+.listDetail {
+    width: 700px;
+}
+.listDetail p {
+    font-size: 13px;
+    color: rgb(53,53,53);
+    line-height: 24px;
+}
+.listDetail em {
+    padding-left: 18px;
+    padding-right: 30px;
+}
+.listDetail em, .listDetail span {
+    font-size: 12px;
+    color: rgb(140,140,140);
+    display: inline-block;
+    line-height: 1;
+    padding-top: 16px;
+}
+#layui-laypage-1 {
+    margin: 40px auto;
+}

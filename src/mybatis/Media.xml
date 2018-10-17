@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.MediaMapper">
+<resultMap type="Media" id="MediaResultMap">
+	<id column="m_id" property="mId"/>
+	<result column="m_name" property="mName"/>
+	<result column="m_type1" property="mType1"/>
+	<result column="m_type2" property="mType2"/>
+	<result column="m_order" property="mOrder"/>
+	<result column="m_link" property="mLink"/>
+	<result column="m_img" property="mImg"/>
+	<result column="m_setTop" property="mSetTop"/>
+</resultMap>
+<sql id="mediaColumns">m_name,m_type1,m_type2,m_order,m_link,m_img,m_setTop</sql>
+<!-- 
+	//获取数据列表
+	List<Media> listPageMedia(Media media);
+	//添加数据
+	void insertMedia(Media media);
+	//修改数据
+	void updateMedia(Media media);
+	//删除数据
+	void deleteMedia(int mId);
+	//置顶
+	void updateMediaSetTop(int mId);
+	//取消置顶
+	void updateMediaSetUnTop(int mId);
+	//根据id获取数据
+	Media getMediaById(int mId);
+	//获取相同名称的数据个数(为后面保证添加修改不会发生重名准备)
+	int getCountOfMediaByName(String mName);
+ -->
+ <!-- 获取数据列表 -->
+<select id="listPageMedia"  parameterType="Media" resultMap="MediaResultMap">
+	select * from tb_media 
+	<if test="mName!=null and mName!=''">
+		where m_name like "%"#{mName}"%"
+	</if>
+	order by m_order,m_setTop
+</select>
+<!-- 添加数据 -->
+<insert id="insertMedia" parameterType="Media" useGeneratedKeys="true">
+	insert into tb_media(<include refid="mediaColumns"></include>)
+	values(#{mName},#{mType1},#{mType2},#{mOrder},#{mLink},#{mImg},#{mSetTop})
+</insert>
+<!-- 修改数据 -->
+<update id="updateMedia" parameterType="Media">
+	update tb_media set
+	m_name=#{mName},
+	m_type1=#{mType1},
+	m_type2=#{mType2},
+	m_order=#{mOrder},
+	m_link=#{mLink},
+	m_img=#{mImg}
+	where m_id=#{mId}
+</update>
+<!-- 删除数据 -->
+<delete id="deleteMedia" parameterType="int">
+	delete from tb_media where m_id=#{mId}
+</delete>
+<!-- 置顶 -->
+<update id="updateMediaSetTop" parameterType="int"> 
+	update tb_media set m_setTop=0 where m_id=#{mId}
+</update>
+<!-- 取消置顶 -->
+<update id="updateMediaSetUnTop" parameterType="int"> 
+	update tb_media set m_setTop=1 where m_id=#{mId}
+</update>
+<!-- 根据id获取数据 -->
+<select id="getMediaById" parameterType="int" resultMap="MediaResultMap">
+select * from tb_media where m_id=#{mId}
+</select>
+<select id="getCountOfMediaByName" parameterType="string" resultType="int">
+	select count(*) from tb_media where m_name=#{mName}
+</select>
+</mapper>

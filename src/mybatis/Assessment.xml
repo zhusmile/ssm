@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.AssessmentMapper">
+ <resultMap type="Assessment" id="AssessmentResultMap">
+ 	<id column="a_id" property="aId"/>
+ 	<result column="a_content" property="aContent"/>
+ 	<result column="a_title" property="aTitle"/>
+ 	<result column="a_abstract" property="aAbstract"/>
+ 	<result column="a_creator" property="aCreator"/>
+ 	<result column="a_publishtime" property="aPublishTime"/>
+ 	<result column="a_createtime" property="aCreateTime"/>
+ 	<result column="a_modifier" property="aModifier"/>
+ 	<result column="a_modifytime" property="aModifyTime"/>
+ 	<result column="a_publish" property="aPublish"/>
+ 	<result column="a_type" property="aType"/>
+ 	<result column="a_source" property="aSource"/>
+ </resultMap>
+ <!-- 
+		//获取数据
+	List<Assessment> listPageAssessment(Assessment a);
+	//添加数据
+	void insertAssessment(Assessment a);
+	//修改数据
+	void updateAssessment(Assessment a);
+	//删除数据
+	void deleteAssessment(int aId);
+	//根据id查找数据
+	Assessment getAssessmentById(int aId);
+	//发布
+	void updateAssessmentPublish(int aId);
+	//取消发布
+	void updateAssessmentUnPublish(int aId);
+	//获取计数
+	int getCountByTitle(String aTitle);
+ -->
+ <select id="listPageAssessment" parameterType="Assessment" resultMap="AssessmentResultMap">
+ 	select * from tb_assessment <where>
+ 		<if test="aTitle!=null and aTitle!=''">
+ 			a_title like %#{aTitle}%
+ 		</if>
+ 		<if test="aType!=null">
+ 			and a_type=#{aType}
+ 		</if>
+ 	</where>
+ 	order by a_publish,a_modifytime desc
+ </select>
+ <insert id="insertAssessment" parameterType="Assessment" useGeneratedKeys="true">
+ 	insert into tb_assessment(a_content,a_title,a_abstract,a_creator,a_publishtime,a_createtime,a_source,a_type)
+ 	values(#{aContent},#{aTitle},#{aAbstract},#{aCreator},#{aPublishTime},#{aCreateTime},#{aSource},#{aType})
+ </insert>
+ <update id="updateAssessment" parameterType="Assessment">
+ 	update tb_assessment set
+ 	a_content=#{aContent},
+ 	a_title=#{aTitle},
+ 	a_abstract=#{aAbstract},
+ 	a_publishtime=#{aPublishTime},
+ 	a_modifier=#{aModifier},
+ 	a_modifytime=#{aModifyTime},
+ 	a_source=#{aSource},
+ 	a_type=#{aType}
+ 	where 
+ 	a_id=#{aId}
+ </update>
+ <delete id="deleteAssessment" parameterType="int">
+ 	delete from tb_assessment where a_id=#{aId}
+ </delete>
+ <select id="getAssessmentById" parameterType="int" resultMap="AssessmentResultMap">
+ 	select * from tb_assessment where a_id=#{aId}
+ </select>
+ <update id="updateAssessmentPublish" parameterType="int">
+ 	update tb_assessment set a_publish=0 where a_id=#{aId}
+ </update>
+  <update id="updateAssessmentUnPublish" parameterType="int">
+ 	update tb_assessment set a_publish=1 where a_id=#{aId}
+ </update>
+ <select id="getCountByTitle" parameterType="string" resultType="int">
+ 	select count(*) from tb_assessment where a_title=#{aTitle}
+ </select>
+</mapper>

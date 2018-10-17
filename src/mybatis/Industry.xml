@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.IndustryMapper">
+	<!-- 
+	//获取or查找
+	List<Industry> listPageIndustry(Industry industry);
+	//添加
+	void insertIndustry(Industry industry);
+	//修改
+	void updateIndustry(Industry industry);
+	//删除
+	void deleteIndustry(int iId);
+	//根据id获取
+	Industry getIndustryById(int iId);
+	//查找同名数据条数
+	int getCountByName(String iName);
+	List<Industry> getIndustryList()
+	 -->
+<select id="listPageIndustry" parameterType="Industry" resultType="Industry">
+	select i_id as iId,i_name as iName from tb_industry 
+	<if test="iName!=null and iName!=''">where i_name=#{iName}</if>
+</select>
+<insert id="insertIndustry" parameterType="Industry" useGeneratedKeys="true">
+	insert into tb_industry(i_name)
+	values(#{iName})
+</insert>
+<update id="updateIndustry" parameterType="Industry">
+	update tb_industry set
+	i_name=#{iName}
+	where i_id=#{iId}
+</update>
+<delete id="deleteIndustry" parameterType="int">
+	delete from tb_industry where i_id=#{iId}
+</delete>
+<select id="getIndustryById" parameterType="int" resultType="Industry">
+	select i_id as iId,i_name as iName from tb_industry where i_id=#{iId}
+</select>
+<select id="getCountByName" parameterType="string" resultType="int">
+	select count(*) from tb_industry where i_name=#{iName}
+</select>
+<select id="getIndustryList" resultType="Industry">
+	select i_id as iId,i_name as iName from tb_industry
+</select>
+</mapper>

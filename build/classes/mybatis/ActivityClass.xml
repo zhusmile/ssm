@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.ActivityClassMapper">
+<resultMap type="ActivityClass" id="ActivityClassResultMap">
+	<id column="ac_id" property="acId"/>
+	<result column="ac_title" property="acTitle"/>
+	<result column="ac_source" property="acSource"/>
+	<result column="ac_type" property="acType"/>
+	<result column="ac_abstract" property="acAbstract"/>
+	<result column="ac_issuer" property="acIssuer"/>
+	<result column="ac_publishtime" property="acPublishTime"/>
+	<result column="ac_modifier" property="acModifier"/>
+	<result column="ac_modifytime" property="acModifyTime"/>
+	<result column="ac_enabled" property="acEnabled"/>
+	<result column="ac_img1" property="acImg1"/>
+	<result column="ac_img2" property="acImg2"/>
+	<result column="ac_link" property="acLink"/>
+	<result column="ac_visitcount" property="acVisitCount"/>
+	<result column="ac_areaid" property="acAreaId"/>
+	<result column="a_name" property="acAreaName"/>
+</resultMap>
+<resultMap type="ActivityClass" id="PartAcResultMap">
+	<id column="ac_id" property="acId"/>
+	<result column="ac_title" property="acTitle"/>
+</resultMap>
+<!-- 	//获取数据
+	List<ActivityClass> listPageActivityClass(ActivityClass ac);
+	//添加数据
+	void insertActivityClass(ActivityClass ac);
+	//修改数据
+	void updateActivityClass(ActivityClass ac);
+	//删除数据
+	void deleteActivityClass(int acId);
+	//根据id查找数据
+	ActivityClass getActivityClassById(int acId);
+	//启用
+	void updateActivityClassEnabled(int acId);
+	//取消启用
+	void updateActivityClassUnEnabled(int acId);
+	//更新访问量
+	void updateActivityClassVisitCount(int acId);
+	//名称计数
+	int getCountByAcTitle(String acTitle);
+		//获取id和标题
+	List<ActivityClass> getActivityClassList();
+	
+ -->
+ <select id="listPageActivityClass" parameterType="ActivityClass" resultMap="ActivityClassResultMap">
+ 	select tb_activityclass.*,a_name from tb_activityclass,tb_area where ac_areaid=a_id
+ 		<if test="acTitle!=null and acTitle!=''">
+ 			ac_title like "%"#{acTitle}"%"
+ 		</if>
+ 		<if test="acType!=null">
+ 			and ac_type=#{acType}
+ 		</if>
+ 		order by ac_enabled,ac_publishtime desc
+ </select>
+ <insert id="insertActivityClass" parameterType="ActivityClass" useGeneratedKeys="true">
+ 	insert into tb_activityclass(ac_title,ac_areaid,ac_source,ac_type,ac_abstract,ac_issuer,ac_publishtime,ac_img1,ac_img2,ac_link)
+ 	values(#{acTitle},#{acAreaId},#{acSource},#{acType},#{acAbstract},#{acIssuer},#{acPublishTime},#{acImg1},#{acImg2},#{acLink})
+ </insert>
+ <update id="updateActivityClass" parameterType="ActivityClass">
+ 	update tb_activityclass set
+ 	ac_title=#{acTitle},
+ 	ac_areaid=#{acAreaId},
+ 	ac_source=#{acSource},
+ 	ac_type=#{acType},
+ 	ac_abstract=#{acAbstract},
+ 	ac_modifier=#{acModifier},
+ 	ac_modifytime=#{acModifyTime},
+ 	ac_img1=#{acImg1},
+ 	ac_img2=#{acImg2},
+ 	ac_link=#{acLink}
+ 	where ac_id=#{acId}
+ </update>
+ <delete id="deleteActivityClass" parameterType="int">
+ 	delete from tb_activityclass where ac_id=#{acId}
+ </delete>
+ <select id="getActivityClassById" parameterType="int" resultMap="ActivityClassResultMap">
+ 	select * from tb_activityclass where ac_id=#{acId}
+ </select>
+ <update id="updateActivityClassEnabled" parameterType="int">
+ 	update tb_activityclass set ac_enabled=0 where ac_id=#{acId}
+ </update>
+  <update id="updateActivityClassUnEnabled" parameterType="int">
+ 	update tb_activityclass set ac_enabled=1 where ac_id=#{acId}
+ </update>
+ <update id="updateActivityClassVisitCount" parameterType="int">
+ 	update tb_activityclass set ac_visitcount=ac_visitcount+1 where ac_id=#{acId}
+ </update>
+ <select id="getCountByAcTitle" parameterType="string" resultType="int">
+ 	select count(*) from tb_activityclass where ac_title=#{acTitle}
+ </select>
+ <select id="getActivityClassList" resultMap="PartAcResultMap">
+ 	select ac_id,ac_title from tb_activityclass
+ </select>
+  <select id="getAcListByType" parameterType="int" resultMap="ActivityClassResultMap">
+ 	select tb_activityclass.*,a_name from tb_activityclass left join tb_area on ac_areaid=a_id where ac_type=#{acType}
+ </select>
+</mapper>

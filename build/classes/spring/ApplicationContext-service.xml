@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="userService" class="com.flf.service.impl.UserServiceImpl">
+		<property name="userMapper" ref="userMapper"/>
+	</bean>
+	<bean id="roleService" class="com.flf.service.impl.RoleServiceImpl">
+		<property name="roleMapper" ref="roleMapper"/>
+	</bean>
+	<bean id="menuService" class="com.flf.service.impl.MenuServiceImpl">
+		<property name="menuMapper" ref="menuMapper"/>
+	</bean>
+	<bean id="studentService" class="com.flf.service.impl.StudentServiceImpl">
+		<property name="studentMapper" ref="studentMapper"/>
+	</bean>
+	<bean id="qrCodeService" class="com.flf.service.impl.QrCodeServiceImpl">
+		<property name="qrCodeMapper" ref="qrCodeMapper"/>
+	</bean>
+	<bean id="bannerService" class="com.flf.service.impl.BannerServiceImpl">
+		<property name="bannerMapper" ref="bannerMapper"></property>
+	</bean>
+	<bean id="entreGroupService" class="com.flf.service.impl.EntreGroupServiceImpl">
+		<property name="entreGroupMapper" ref="entreGroupMapper"></property>
+	</bean>
+	<bean id="advertService" class="com.flf.service.impl.AdvertServiceImpl">
+		<property name="advertMapper" ref="advertMapper"></property>
+	</bean>
+	<bean id="fadvertService" class="com.flf.service.impl.FadvertServiceImpl">
+		<property name="fadvertMapper" ref="fadvertMapper"></property>
+	</bean>
+	<bean id="infoService" class="com.flf.service.impl.InfoServiceImpl">
+		<property name="infoMapper" ref="infoMapper"></property>
+	</bean>
+	<bean id="orgService" class="com.flf.service.impl.OrgServiceImpl">
+		<property name="orgMapper" ref="orgMapper"></property>
+	</bean>
+	<bean id="generalAdvertService" class="com.flf.service.impl.GeneralAdvertServiceImpl">
+		<property name="generalAdvertMapper" ref="generalAdvertMapper"></property>
+	</bean>
+	<bean id="achievementService" class="com.flf.service.impl.AchievementServiceImpl">
+		<property name="achievementMapper" ref="achievementMapper"></property>
+	</bean>
+	<bean id="dynamicService" class="com.flf.service.impl.DynamicServiceImpl">
+		<property name="dynamicMapper" ref="dynamicMapper"></property>
+	</bean>
+	<bean id="areaService" class="com.flf.service.impl.AreaServiceImpl">
+		<property name="areaMapper" ref="areaMapper"></property>
+	</bean>
+	<bean id="baseService" class="com.flf.service.impl.BaseServiceImpl">
+		<property name="baseMapper" ref="baseMapper"></property>
+	</bean>
+	<bean id="institutionService" class="com.flf.service.impl.InstitutionServiceImpl">
+		<property name="institutionMapper" ref="institutionMapper"></property>
+	</bean>
+	<bean id="mediaService" class="com.flf.service.impl.MediaServiceImpl">
+		<property name="mediaMapper" ref="mediaMapper"></property>
+	</bean>
+	<bean id="activityService" class="com.flf.service.impl.ActivityServiceImpl">
+		<property name="activityMapper" ref="activityMapper"></property>
+	</bean>
+	<bean id="mascotService" class="com.flf.service.impl.MascotServiceImpl">
+		<property name="mascotMapper" ref="mascotMapper"></property>
+	</bean>
+	<bean id="activityClassService" class="com.flf.service.impl.ActivityClassServiceImpl">
+		<property name="activityClassMapper" ref="activityClassMapper"></property>
+	</bean>
+	<bean id="guestService" class="com.flf.service.impl.GuestServiceImpl">
+		<property name="guestMapper" ref="guestMapper"></property>
+	</bean>
+	<bean id="exhibitionRoomService" class="com.flf.service.impl.ExhibitionRoomServiceImpl">
+		<property name="exhibitionRoomMapper" ref="exhibitionRoomMapper"></property>
+	</bean>
+	<bean id="newsService" class="com.flf.service.impl.NewsServiceImpl">
+		<property name="newsMapper" ref="newsMapper"></property>
+	</bean>
+	<bean id="industryNewsService" class="com.flf.service.impl.IndustryNewsServiceImpl">
+		<property name="industryNewsMapper" ref="industryNewsMapper"></property>
+	</bean>
+	<bean id="ecosphereService" class="com.flf.service.impl.EcosphereServiceImpl">
+		<property name="ecosphereMapper" ref="ecosphereMapper"></property>
+	</bean>
+	<bean id="timeAxisService" class="com.flf.service.impl.TimeAxisServiceImpl">
+		<property name="timeAxisMapper" ref="timeAxisMapper"></property>
+	</bean>
+	<bean id="industryService" class="com.flf.service.impl.IndustryServiceImpl">
+		<property name="industryMapper" ref="industryMapper"></property>
+	</bean>
+	<bean id="subjectClassficationService" class="com.flf.service.impl.SubjectClassficationServiceImpl">
+		<property name="subjectClassficationMapper" ref="subjectClassficationMapper"></property>
+	</bean>
+	<bean id="policyClassficationService" class="com.flf.service.impl.PolicyClassficationServiceImpl">
+		<property name="policyClassficationMapper" ref="policyClassficationMapper"></property>
+	</bean>
+	<bean id="industrialParkService" class="com.flf.service.impl.IndustrialParkServiceImpl">
+		<property name="industrialParkMapper" ref="industrialParkMapper"></property>
+	</bean>
+	<bean id="policyService" class="com.flf.service.impl.PolicyServiceImpl">
+		<property name="policyMapper" ref="policyMapper"></property>
+	</bean>
+	<bean id="noteService" class="com.flf.service.impl.NoteServiceImpl">
+		<property name="noteMapper" ref="noteMapper"></property>
+	</bean>
+	<bean id="stateService" class="com.flf.service.impl.StateServiceImpl">
+		<property name="stateMapper" ref="stateMapper"></property>
+	</bean>
+	<bean id="assessmentService" class="com.flf.service.impl.AssessmentServiceImpl">
+		<property name="assessmentMapper" ref="assessmentMapper"></property>
+	</bean>
+	<bean id="multipartResolver"    
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">    
+        <!-- set the max upload size100MB -->    
+        <property name="maxUploadSize">    
+            <value>104857600</value>    
+        </property>    
+        <property name="maxInMemorySize">    
+            <value>4096</value>    
+        </property>   
+        <property name="defaultEncoding">  
+            <value>utf-8</value>  
+        </property>  
+    </bean> 
+</beans>

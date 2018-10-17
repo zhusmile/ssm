@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.InfoMapper">
+<sql id="infoColumns">info_name,info_link,info_order,info_type,info_setTop</sql>
+<resultMap type="Information" id="InfoResultMap">
+	<id column="info_id" property="infoId"/>
+	<result column="info_name" property="infoName"/>
+	<result column="info_link" property="infoLink"/>
+	<result column="info_order" property="infoOrder"/>
+	<result column="info_type" property="infoType"/>
+	<result column="info_setTop" property="infoSetTop"/>
+</resultMap>
+<!-- 
+	//获取数据列表
+	List<Information> listPageInformation(Information info);
+	//添加数据
+	void insertInformation(Information info);
+	//修改数据
+	void updateInformation(Information info);
+	//删除数据
+	void deleteInformation(int infoId);
+	//置顶
+	void updateInformationSetTop(int infoId);
+	//取消置顶
+	void updateInformationSetUnTop(int infoId);
+	//根据id获取数据
+	Information getInformationById(int adId);
+ -->
+ <select id="listPageInformation" parameterType="Information" resultMap="InfoResultMap">
+ 	select * from tb_information where info_type=#{infoType}
+ </select>
+ <!-- info_name,info_link,info_order,info_type,info_setTop -->
+ <insert id="insertInformation" parameterType="Information" useGeneratedKeys="true">
+ 	insert into tb_information(<include refid="infoColumns"></include>)
+ 	values(#{infoName},#{infoLink},#{infoOrder},#{infoType},#{infoSetTop})
+ </insert>
+ <update id="updateInformation" parameterType="Information">
+ 	update tb_information set
+ 	info_name=#{infoName},
+ 	info_link=#{infoLink},
+ 	info_Order=#{infoOrder}
+ 	where info_id=#{infoId}
+ </update>
+ <delete id="deleteInformation" parameterType="int">
+ 	delete from tb_information where info_id=#{infoId}
+ </delete>
+ <update id="updateInformationSetTop" parameterType="int">
+ 	update tb_information set info_setTop=1 where info_id=#{infoId}
+ </update>
+ <update id="updateInformationSetUnTop" parameterType="int">
+ 	update tb_information set info_setTop=2 where info_id=#{infoId}
+ </update>
+ <select id="getInformationById" parameterType="int">
+ 	select * from tb_information where info_id=#{infoId}
+ </select>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.NewsMapper">
+	<resultMap type="News" id="NewsResultMap">
+		<id column="n_id" property="nId"/>
+		<result column="n_title" property="nTitle"/>
+		<result column="n_abstract" property="nAbstract"/>
+		<result column="n_order" property="nOrder"/>
+		<result column="n_content" property="nContent"/>
+		<result column="n_publishtime" property="nPublishTime"/>
+		<result column="n_source" property="nSource"/>
+		<result column="n_publish" property="nPublish"/>
+		<result column="n_type" property="nType"/>
+		<result column="n_settop" property="nSetTop"/>
+		<result column="n_modifytime" property="nModifyTime"/>
+		<result column="n_createtime" property="nCreateTime"/>
+		<result column="n_pageview" property="nPageView"/>
+	</resultMap>
+	<!-- 
+			//获取数据
+	List<News> listPageNews(News n);
+	//添加数据
+	void insertNews(News n);
+	//修改数据
+	void updateNews(News n);
+	//删除数据
+	void deleteNews(int nId);
+	//根据id查找数据
+	News getNewsById(int nId);
+	//置顶
+	void updateNewsSetTop(int nId);
+	//取消置顶
+	void updateNewsSetUnTop(int nId);
+	//发布
+	void updateNewsPublish(int nId);
+	//取消发布
+	void updateNewsUnPublish(int aId);
+		//查找同标题数据
+	int getCountBynTitle(String nTitle);
+		//获取全面创新改革实验(type<5)
+	List<News> getQCG();
+	//获取战略性新兴产业
+	List<News> getZXX();
+		//更新访问量
+	void updatePageView(int nId);
+	 -->
+<select id="listPageNews" parameterType="News" resultMap="NewsResultMap">
+	select * from tb_news where n_type=#{nType}
+		<if test="nTitle!=null and nTitle!=''">
+			and n_title like "%"#{nTitle}"%"
+		</if>
+		<if test="nSetTop!=null">
+			and n_settop=#{nSetTop}
+		</if>
+		<if test="nPublish!=null">
+			and n_publish=#{nPublish}
+		</if>
+		order by n_settop,n_publish,n_modifytime
+</select>
+<insert id="insertNews" parameterType="News" useGeneratedKeys="true">
+	insert into tb_news(n_title,n_abstract,n_order,n_content,n_publishtime,n_source,n_type,n_createtime)
+	values(#{nTitle},#{nAbstract},#{nOrder},#{nContent},#{nPublishTime},#{nSource},#{nType},#{nCreateTime})
+</insert>
+<update id="updateNews" parameterType="News">
+	update tb_news set
+	n_title=#{nTitle},
+	n_abstract=#{nAbstract},
+	n_order=#{nOrder},
+	n_content=#{nContent},
+	n_publishtime=#{nPublishTime},
+	n_source=#{nSource},
+	n_modifytime=#{nModifyTime}
+	where 
+	n_id=#{nId}
+</update>
+<delete id="deleteNews" parameterType="int">
+	delete from tb_news where n_id=#{nId}
+</delete>
+<select id="getNewsById" parameterType="int" resultMap="NewsResultMap">
+	select * from tb_news where n_id=#{nId} 
+</select>
+<update id="updateNewsSetTop" parameterType="int">
+	update tb_news set n_settop=0 where n_id=#{nId}
+</update>
+<update id="updateNewsSetUnTop" parameterType="int">
+	update tb_news set n_settop=1 where n_id=#{nId}
+</update>
+<update id="updateNewsPublish" parameterType="int">
+	update tb_news set n_publish=0 where n_id=#{nId}
+</update>
+<update id="updateNewsUnPublish" parameterType="int">
+	update tb_news set n_publish=1 where n_id=#{nId}
+</update>
+<select id="getCountBynTitle" parameterType="News" resultType="int">
+	select count(*) from tb_news where n_title=#{nTitle} and n_type=#{nType}
+</select>
+<select id="getQCG" resultMap="NewsResultMap">
+	select * from tb_news where n_type&lt;5 order by n_settop
+</select>
+<select id="getZXX" resultMap="NewsResultMap">
+	select * from tb_news where n_type&gt;4 order by n_settop
+</select>
+<update id="updatePageView" parameterType="int">
+	update tb_news set n_pageview=n_pageview+1 where n_id=#{nId}
+</update>
+</mapper>

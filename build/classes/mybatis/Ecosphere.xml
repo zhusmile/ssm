@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.EcosphereMapper">
+	<!-- 
+	//获取or查找
+	List<Ecosphere> listPageEcosphere(Ecosphere ecosphere);
+	//添加
+	void insertEcosphere(Ecosphere ecosphere);
+	//修改
+	void updateEcosphere(Ecosphere ecosphere);
+	//删除
+	void deleteEcosphere(int eId);
+	//根据id获取
+	Ecosphere getEcosphereById(int eId);
+	//查找同名数据条数
+	int getCountByName(String eName);
+	 -->
+<select id="listPageEcosphere" parameterType="Ecosphere" resultType="Ecosphere">
+	select e_id as eId,e_name as eName from tb_ecosphere 
+	<if test="eName!=null and eName!=''">where e_name like "%"#{eName}"%"</if>
+</select>
+<insert id="insertEcosphere" parameterType="Ecosphere" useGeneratedKeys="true">
+	insert into tb_ecosphere(e_name)
+	values(#{eName})
+</insert>
+<update id="updateEcosphere" parameterType="Ecosphere">
+	update tb_ecosphere set
+	e_name=#{eName}
+	where e_id=#{eId}
+</update>
+<delete id="deleteEcosphere" parameterType="int">
+	delete from tb_ecosphere where e_id=#{eId}
+</delete>
+<select id="getEcosphereById" parameterType="int" resultType="Ecosphere">
+	select e_id as eId,e_name as eName from tb_ecosphere where e_id=#{eId}
+</select>
+<select id="getCountByName" parameterType="string" resultType="int">
+	select count(*) from tb_ecosphere where e_name=#{eName}
+</select>
+</mapper>

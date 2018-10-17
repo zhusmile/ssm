@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.AchievementMapper">
+<sql id="acColumns">ac_title,ac_createTime,ac_publishTime,ac_publish,ac_setTop,ac_order,ac_content</sql>
+<resultMap type="Achievement" id="AchResultMap">
+	<id column="ac_id" property="acId"/>
+	<result column="ac_title" property="acTitle"/>
+	<result column="ac_createTime" property="acCreateTime"/>
+	<result column="ac_publishTime" property="acPublishTime"/>
+	<result column="ac_publish" property="acPublish"/>
+	<result column="ac_setTop" property="acSetTop"/>
+	<result column="ac_order" property="acOrder"/>
+	<result column="ac_content" property="acContent"/>
+</resultMap>
+<!-- 
+		//获取数据
+	List<Achievement> listPageAchievement(Achievement ac);
+	//添加数据
+	void insertAchievement(Achievement ac);
+	//修改数据
+	void updateAchievement(Achievement ac);
+	//删除数据
+	void deleteAchievement(int acId);
+	//根据id查找数据
+	Achievement getAchievementById(int acId);
+	//置顶
+	void updateAcievementSetTop(int acId);
+	//取消置顶
+	void updateAchievementSetUnTop(int acId);
+	//发布
+	void updateAchievementPublish(int acId);
+	//取消发布
+	void updateAchievementUnPublish(int acId);
+	//名称计数
+	int getCountByAcName(String acName);
+ -->
+ <select id="listPageAchievement" parameterType="Achievement" resultMap="AchResultMap">
+ 	select * from tb_achievement 
+ 	<where>
+ 		<if test="acTitle!=null and acTitle!=''">
+ 			 ac_title like "%"#{acTitle}"%"
+ 		</if>
+ 		<if test="acPublish!=null">
+ 			and ac_publish=#{acPublish}
+ 		</if>
+ 		<if test="acSetTop!=null">
+ 			and ac_setTop=#{acSetTop}
+ 		</if>
+ 	</where>
+ 	order by ac_order,ac_setTop
+ </select>
+ <insert id="insertAchievement" parameterType="Achievement" useGeneratedKeys="true">
+ 	insert into tb_achievement(<include refid="acColumns"></include>)
+ 	values(#{acTitle},#{acCreateTime},#{acPublishTime},#{acPublish},#{acSetTop},#{acOrder},#{acContent})
+ </insert>
+ <update id="updateAchievement" parameterType="Achievement">
+ 	update tb_achievement set
+ 	ac_title=#{acTitle},
+ 	ac_publishTime=#{acPublishTime},
+ 	ac_order=#{acOrder},
+ 	ac_content=#{acContent}
+ 	where ac_id=#{acId}
+ </update>
+ <delete id="deleteAchievement" parameterType="int">
+ 	delete from tb_achievement where ac_id=#{acId}
+ </delete>
+ <select id="getAchievementById" parameterType="int" resultMap="AchResultMap">
+ 	select * from tb_achievement where ac_id=#{acId}
+ </select>
+ <update id="updateAchievementSetTop" parameterType="int">
+ 	update tb_achievement set ac_setTop=0 where ac_id=#{acId}
+ </update>
+ <update id="updateAchievementSetUnTop" parameterType="int">
+ 	update tb_achievement set ac_setTop=1 where ac_id=#{acId}
+ </update>
+ <update id="updateAchievementPublish" parameterType="int">
+ 	update tb_achievement set ac_publish=0 where ac_id=#{acId}
+ </update>
+ <update id="updateAchievementUnPublish" parameterType="int">
+ 	update tb_achievement set ac_publish=1 where ac_id=#{acId}
+ </update>
+ <select id="getCountByAcTitle" parameterType="string" resultType="int">
+ 	select count(*) from tb_achievement where ac_title=#{acTitle}
+ </select>
+</mapper>

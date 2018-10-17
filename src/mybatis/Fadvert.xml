@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.FadvertMapper">
+<!-- 实体类        Fadvert 属性fId,fName,fType,fDescrip,fLink,fOrder,fSetTop
+	   数据表tb_fadvert 字段fa_id,fa_name,fa_type,fa_descrip,fa_link,fa_order,fa_setTop
+ -->
+<sql id="faColumns">fa_name,fa_type,fa_descrip,fa_link,fa_order,fa_setTop</sql>
+<resultMap type="Fadvert" id="FadvertResultMap">
+	<id column="fa_id" property="fId"/>
+	<result column="fa_name" property="fName"/>
+	<result column="fa_type" property="fType"/>
+	<result column="fa_descrip" property="fDescrip"/>
+	<result column="fa_link" property="fLink"/>
+	<result column="fa_order" property="fOrder"/>
+	<result column="fa_setTop" property="fSetTop"/>
+</resultMap>
+<!-- 	FadvertMapper
+		//获取数据列表
+	List<Fadvert> listPageFadvert(Fadvert fadvert);
+	//添加数据
+	void insertFadvert(Fadvert fadvert);
+	//修改数据
+	void updateFadvert(Fadvert fadvert);
+	//删除数据
+	void deleteFadvert(int fId);
+	//置顶
+	void updateFadvertSetTop(int fId);
+	//取消置顶
+	void updateFadvertSetUnTop(int fId);
+	//根据id获取数据
+	Fadvert getFadvertById(int fId);
+ -->
+<!-- 获取数据列表 -->
+<select id="listPageFadvert" parameterType="Fadvert" resultMap="FadvertResultMap">
+	select * from tb_fadvert order by fa_order,fa_setTop
+</select>
+<!-- 添加数据 -->
+<insert id="insertFadvert" parameterType="Fadvert" useGeneratedKeys="true">
+	insert into tb_fadvert(<include refid="faColumns"></include>)
+	values(#{fName},#{fType},#{fDescrip},#{fLink},#{fOrder},#{fSetTop})
+</insert>
+<!-- 修改数据 -->
+<update id="updateFadvert" parameterType="Fadvert">
+	update tb_fadvert set
+	fa_name=#{fName}
+	,fa_descrip=#{fDescrip}
+	,fa_link=#{fLink}
+	,fa_order=#{fOrder}
+	where fa_id=#{fId}
+</update>
+<!-- 删除数据 -->
+<delete id="deleteFadvert" parameterType="int">
+	delete from tb_fadvert where fa_id=#{fId}
+</delete>
+<!-- 置顶 -->
+<update id="updateFadvertSetTop" parameterType="int">
+	update tb_fadvert set fa_setTop=1 where fa_id=#{fId}
+</update>
+<!-- 取消置顶 -->
+<update id="updateFadvertSetUnTop" parameterType="int">
+	update tb_fadvert set fa_setTop=2 where fa_id=#{fId}
+</update>
+<!-- 根据id获取数据 -->
+<select id="getFadvertById" parameterType="int" resultMap="FadvertResultMap">
+	select * from tb_fadvert where fa_id=#{fId}
+</select>
+</mapper>

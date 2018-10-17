@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.MascotMapper">
+<resultMap type="Mascot" id="MascotResultMap">
+	<id column="m_id" property="mId"/>
+	<result column="m_title" property="mTitle"/>
+	<result column="m_content" property="mContent"/>
+	<result column="m_abstract" property="mAbstract"/>
+	<result column="m_issuer" property="mIssuer"/>
+	<result column="m_publishtime" property="mPublishTime"/>
+	<result column="m_createtime" property="mCreateTime"/>
+	<result column="m_modifier" property="mModifier"/>
+	<result column="m_modifytime" property="mModifyTime"/>
+	<result column="m_img" property="mImg"/>
+	<result column="m_settop" property="mSetTop"/>
+	<result column="m_publish" property="mPublish"/>
+	<result column="m_order" property="mOrder"/>
+</resultMap>
+<!-- 
+		//获取数据
+	List<Mascot> listPageMascot(Mascot m);
+	//添加数据
+	void insertMascot(Mascot m);
+	//修改数据
+	void updateMascot(Mascot m);
+	//删除数据
+	void deleteMascot(int mId);
+	//根据id查找数据
+	Mascot getMascotById(int mId);
+	//置顶
+	void updateMascotSetTop(int mId);
+	//取消置顶
+	void updateMascotSetUnTop(int mId);
+	//发布
+	void updateMascotPublish(int mId);
+	//取消发布
+	void updateMascotUnPublish(int mId);
+		//获取计数
+	int getCountByMtitle(String mTitle);
+ -->
+<select id="listPageMascot" parameterType="Mascot" resultMap="MascotResultMap">
+	select * from tb_mascot 
+	<where>
+		<if test="mTitle!=null and mTitle!=''">m_title like "%"#{mTitle}"%"</if>
+		<if test="mPublish!=null">and m_publish=#{mPublish}</if>
+		<if test="mSetTop!=null">and m_settop=#{mSetTop}</if>
+	</where>
+	order by m_settop,m_publish,m_order
+</select>
+<insert id="insertMascot" parameterType="Mascot" useGeneratedKeys="true">
+	insert into tb_mascot(m_title,m_content,m_abstract,m_issuer,m_publishtime,m_createtime,m_img,m_publish)
+	values(#{mTitle},#{mContent},#{mAbstract},#{mIssuer},#{mPublishTime},#{mCreateTime},#{mImg},0)
+</insert>
+<update id="updateMascot" parameterType="Mascot">
+	update tb_mascot set
+	m_title=#{mTitle},
+	m_content=#{mContent},
+	m_abstract=#{mAbstract}, 
+	m_modifier=#{mModifier},
+	m_modifytime=#{mModifyTime},
+	m_img=#{mImg},
+	m_order=#{mOrder},
+	m_publish=0
+	where m_id=#{mId}
+</update>
+<delete id="deleteMascot" parameterType="int">
+	delete from tb_mascot where m_id=#{mId}
+</delete>
+<select id="getMascotById" parameterType="int" resultMap="MascotResultMap">
+	select * from tb_mascot where m_id=#{mId}
+</select>
+ <update id="updateMascotSetTop" parameterType="int">
+ 	update tb_mascot set m_settop=0 where m_id=#{mId}
+ </update>
+ <update id="updateMascotSetUnTop" parameterType="int">
+ 	update tb_mascot set m_settop=1 where m_id=#{mId}
+ </update>
+ <update id="updateMascotPublish" parameterType="int">
+ 	update tb_mascot set m_publish=0 where m_id=#{mId}
+ </update>
+ <update id="updateMascotUnPublish" parameterType="int">
+ 	update tb_mascot set m_publish=1 where m_id=#{mId}
+ </update>
+ <select id="getCountByMtitle" resultType="int">
+ 	select count(*) from tb_mascot where m_title=#{mTitle}
+ </select>
+</mapper>

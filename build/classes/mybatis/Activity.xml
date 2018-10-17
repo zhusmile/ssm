@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.ActivityMapper">
+<resultMap type="Activity" id="ActivityResultMap">
+	<id column="a_id" property="aId"/>
+	<result column="a_title" property="aTitle"/>
+	<result column="a_areaid" property="aAreaId"/>
+	<result column="a_name" property="aAreaName"/>
+	<result column="a_type" property="aType"/>
+	<result column="a_descript" property="aDescript"/>
+	<result column="a_issuerorg" property="aIssuerOrg"/>
+	<result column="i_name" property="aIssuerName"/>
+	<result column="a_issuer" property="aIssuer"/>
+	<result column="a_publish" property="aPublish"/>
+	<result column="a_publishtime" property="aPublishTime"/>
+	<result column="a_source" property="aSource"/>
+	<result column="a_modifier" property="aModifier"/>
+	<result column="a_modifytime" property="aModifyTime"/>
+	<result column="a_order" property="aOrder"/>
+	<result column="a_settop" property="aSetTop"/>
+	<result column="a_img" property="aImg"/>
+	<result column="a_content" property="aContent"/>
+	<result column="a_pageview" property="aPageView"/>
+</resultMap>
+<sql id="acColumns">a_title,a_areaid,a_type,a_descript,a_issuerorg,a_issuer,a_publishtime,a_source,a_createtime,a_modifier,a_order,a_settop,a_modifytime,a_publish,a_img,a_content</sql>
+<!-- 	//获取数据
+	List<Activity> listPageActivity(Activity a);
+	//添加数据
+	void insertActivity(Activity a);
+	//修改数据
+	void updateActivity(Activity a);
+	//删除数据
+	void deleteActivity(int aId);
+	//根据id查找数据
+	Activity getActivityById(int aId);
+	//置顶
+	void updateActivitySetTop(int aId);
+	//取消置顶
+	void updateActivitySetUnTop(int aId);
+	//发布
+	void updateActivityPublish(int aId);
+	//取消发布
+	void updateActivityUnPublish(int aId);
+	//获取双创周活动数据(主会场和分会场)
+	List<Activity> listPageSCZ(Activity a);
+	//更新浏览量
+	void updatePageView(int aId);
+ -->
+ <select id="listPageActivity" parameterType="Activity" resultMap="ActivityResultMap">
+ 	select tb_activity.*,tb_area.a_name,tb_institution.i_name from tb_activity left join tb_area on a_areaId=tb_area.a_id left join tb_institution
+ 	on a_issuerorg=i_id
+ 	<where>
+ 		<if test="aTitle!=null and aTitle!=''">
+ 		 	a_title like "%"#{aTitle}"%"
+ 		</if>
+ 		<if test="aType!=null and aType!=''">
+ 			and a_type=#{aType}
+ 		</if>
+ 		<if test="aPublish!=null and aPublish!=''">
+ 			and a_publish=#{aPublish}
+ 		</if>
+ 		<if test="aSetTop!=null and aSetTop!=''">
+ 			and a_settop=#{aSetTop}
+ 		</if>
+ 		<if test="aAreaId!=null and aAreaId!=''">
+ 			and a_areaid=#{aAreaId}
+ 		</if>
+ 	</where>
+ 	order by a_settop,a_order,a_publishtime desc
+ </select>
+ <insert id="insertActivity" parameterType="Activity" useGeneratedKeys="true">
+ 	insert into tb_activity(<include refid="acColumns"></include>)
+ 	values(#{aTitle},#{aAreaId},#{aType},#{aDescript},#{aIssuerOrg},#{aIssuer},#{aPublishTime},#{aSource},#{aCreateTime},#{aModifier},#{aOrder},#{aSetTop},#{aModifyTime},#{aPublish},#{aImg},#{aContent})
+ </insert>
+ <update id="updateActivity" parameterType="Activity">
+ 	update tb_activity set
+ 	a_title=#{aTitle},
+ 	a_areaid=#{aAreaId},
+ 	a_type=#{aType},
+ 	a_descript=#{aDescript},
+ 	a_issuerorg=#{aIssuerOrg},
+ 	a_issuer=#{aIssuer},
+ 	a_publishTime=#{aPublishTime},
+ 	a_source=#{aSource},
+ 	<if test="aCreateTime!=null and aCreateTime!=''">a_createtime=#{aCreateTime},</if>
+ 	<if test="aModifier!=null and aModifier!=''">a_modifier=#{aModifier},</if>
+ 	a_order=#{aOrder},
+ 	<if test="aModifyTime!=null and aModifyTime!=''">a_modifytime=#{aModifyTime},</if>
+ 	a_img=#{aImg},
+ 	a_content=#{aContent},
+ 	a_publish=0
+ 	where a_id=#{aId}
+ </update>
+ <delete id="deleteActivity" parameterType="int">
+ 	delete from tb_activity where a_id=#{acId}
+ </delete>
+ <select id="getActivityById" parameterType="int" resultMap="ActivityResultMap">
+ 	select * from tb_activity where a_id=#{aId}
+ </select>
+ <update id="updateActivitySetTop" parameterType="int">
+ 	update tb_activity set a_settop=0 where a_id=#{aId}
+ </update>
+ <update id="updateActivitySetUnTop" parameterType="int">
+ 	update tb_activity set a_settop=1 where a_id=#{aId}
+ </update>
+ <update id="updateActivityPublish" parameterType="int">
+ 	update tb_activity set a_publish=0 where a_id=#{aId}
+ </update>
+ <update id="updateActivityUnPublish" parameterType="int">
+ 	update tb_activity set a_publish=1 where a_id=#{aId}
+ </update>
+<select id="listPageSCZ" parameterType="Activity" resultMap="ActivityResultMap">
+	select tb_activity.*,tb_area.a_name,tb_institution.i_name from tb_activity left join tb_area on a_areaId=tb_area.a_id left join tb_institution
+ 	on a_issuerorg=i_id where a_type=0 or a_type=1
+</select>
+<update id="updatePageView" parameterType="int">
+	update tb_activity set a_pageview=a_pageview+1 where a_id=#{aId}
+</update>
+</mapper>

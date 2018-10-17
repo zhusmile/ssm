@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.GeneralAdvertMapper">
+<sql id="gaColumns">ga_name,ga_src,ga_link,ga_type,ga_order,ga_setTop</sql>
+<resultMap type="GeneralAdvert" id="OrgResultMap">
+	<id column="ga_id" property="gaId"/>
+	<result column="ga_name" property="gaName"/>
+	<result column="ga_src" property="gaSrc"/>
+	<result column="ga_link" property="gaLink"/>
+	<result column="ga_type" property="gaType"/>
+	<result column="ga_order" property="gaOrder"/>
+	<result column="ga_setTop" property="gaSetTop"/>
+</resultMap>
+ <select id="listPageGeneralAdvert" parameterType="GeneralAdvert" resultMap="OrgResultMap">
+ 	select * from tb_generaladvert where ga_type=#{gaType}
+ </select>
+<insert id="insertGeneralAdvert" parameterType="GeneralAdvert" useGeneratedKeys="true">
+	insert into tb_generaladvert(<include refid="gaColumns"></include>)
+	values(#{gaName},#{gaSrc},#{gaLink},#{gaType},#{gaOrder},#{gaSetTop})
+</insert>
+<update id="updateGeneralAdvert" parameterType="GeneralAdvert">
+	update tb_generaladvert set
+	ga_name=#{gaName},
+	ga_src=#{gaSrc},
+	ga_link=#{gaLink},
+	ga_order=#{gaOrder}
+	where ga_id=#{gaId}
+</update>
+<delete id="deleteGeneralAdvert" parameterType="int">
+	delete from tb_generaladvert where ga_id=#{gaId}
+</delete>
+<update id="updateGeneralAdvertSetTop" parameterType="int">
+	update tb_generaladvert set ga_setTop=1 where ga_id=#{gaId}
+</update>
+<update id="updateGeneralAdvertSetUnTop" parameterType="int">
+	update tb_generaladvert set ga_setTop=2 where ga_id=#{gaId}
+</update>
+<select id="getGeneralAdvertById" parameterType="int" resultMap="OrgResultMap">
+	select * from tb_generaladvert where ga_id=#{gaId}
+</select>
+</mapper>

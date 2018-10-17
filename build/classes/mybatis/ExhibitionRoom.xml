@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.ExhibitionRoomMapper">
+<resultMap type="ExhibitionRoom" id="ExhibitionRoomResultMap">
+	<id column="er_id" property="erId"/>
+	<result column="er_title" property="erTitle"/>
+	<result column="er_content" property="erContent"/>
+	<result column="er_abstract" property="erAbstract"/>
+	<result column="er_issuer" property="erIssuer"/>
+	<result column="er_publishtime" property="erPublishTime"/>
+	<result column="er_createtime" property="erCreateTime"/>
+	<result column="er_modifier" property="erModifier"/>
+	<result column="er_modifytime" property="erModifyTime"/>
+	<result column="er_img" property="erImg"/>
+	<result column="er_settop" property="erSetTop"/>
+	<result column="er_publish" property="erPublish"/>
+	<result column="er_order" property="erOrder"/>
+</resultMap>
+<!-- 
+		//获取数据
+	List<ExhibitionRoom> listPageExhibitionRoom(ExhibitionRoom m);
+	//添加数据
+	void insertExhibitionRoom(ExhibitionRoom m);
+	//修改数据
+	void updateExhibitionRoom(ExhibitionRoom m);
+	//删除数据
+	void deleteExhibitionRoom(int erId);
+	//根据id查找数据
+	ExhibitionRoom getExhibitionRoomById(int erId);
+	//置顶
+	void updateExhibitionRoomSetTop(int erId);
+	//取消置顶
+	void updateExhibitionRoomSetUnTop(int erId);
+	//发布
+	void updateExhibitionRoomPublish(int erId);
+	//取消发布
+	void updateExhibitionRoomUnPublish(int erId);
+		//获取计数
+	int getCountByMtitle(String erTitle);
+ -->
+<select id="listPageExhibitionRoom" parameterType="ExhibitionRoom" resultMap="ExhibitionRoomResultMap">
+	select * from tb_exhibitionroom 
+	<where>
+		<if test="erTitle!=null and erTitle!=''">er_title like "%"#{erTitle}"%"</if>
+		<if test="erPublish!=null">and er_publish=#{erPublish}</if>
+		<if test="erSetTop!=null">and er_settop=#{erSetTop}</if>
+	</where>
+	order by er_settop,er_publish,er_order
+</select>
+<insert id="insertExhibitionRoom" parameterType="ExhibitionRoom" useGeneratedKeys="true">
+	insert into tb_exhibitionroom(er_title,er_content,er_abstract,er_issuer,er_publishtime,er_createtime,er_img,er_publish)
+	values(#{erTitle},#{erContent},#{erAbstract},#{erIssuer},#{erPublishTime},#{erCreateTime},#{erImg},0)
+</insert>
+<update id="updateExhibitionRoom" parameterType="ExhibitionRoom">
+	update tb_exhibitionroom set
+	er_title=#{erTitle},
+	er_content=#{erContent},
+	er_abstract=#{erAbstract}, 
+	er_modifier=#{erModifier},
+	er_modifytime=#{erModifyTime},
+	er_img=#{erImg},
+	er_order=#{erOrder},
+	er_publish=0
+	where er_id=#{erId}
+</update>
+<delete id="deleteExhibitionRoom" parameterType="int">
+	delete from tb_exhibitionroom where er_id=#{erId}
+</delete>
+<select id="getExhibitionRoomById" parameterType="int" resultMap="ExhibitionRoomResultMap">
+	select * from tb_exhibitionroom where er_id=#{erId}
+</select>
+ <update id="updateExhibitionRoomSetTop" parameterType="int">
+ 	update tb_exhibitionroom set er_settop=0 where er_id=#{erId}
+ </update>
+ <update id="updateExhibitionRoomSetUnTop" parameterType="int">
+ 	update tb_exhibitionroom set er_settop=1 where er_id=#{erId}
+ </update>
+ <update id="updateExhibitionRooerPublish" parameterType="int">
+ 	update tb_exhibitionroom set er_publish=0 where er_id=#{erId}
+ </update>
+ <update id="updateExhibitionRoomUnPublish" parameterType="int">
+ 	update tb_exhibitionroom set er_publish=1 where er_id=#{erId}
+ </update>
+ <select id="getCountByMtitle" resultType="int">
+ 	select count(*) from tb_exhibitionroom where er_title=#{erTitle}
+ </select>
+</mapper>

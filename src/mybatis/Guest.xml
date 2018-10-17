@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.GuestMapper">
+	<resultMap type="Guest" id="GuestResultMap">
+		<id column="g_id" property="gId"/>
+		<result column="g_title" property="gTitle"/>
+		<result column="g_type" property="gType"/>
+		<result column="g_issuer" property="gIssuer"/>
+		<result column="g_publishtime" property="gPublishTime"/>
+		<result column="g_createtime" property="gCreateTime"/>
+		<result column="g_modifier" property="gModifier"/>
+		<result column="g_modifytime" property="gModifyTime"/>
+		<result column="g_img" property="gImg"/>
+		<result column="g_publish" property="gPublish"/>
+		<result column="g_settop" property="gSetTop"/>
+		<result column="ac_title" property="gTypeName"/>
+		<result column="g_order" property="gOrder"/>
+	</resultMap>
+<!--  
+		//获取数据
+	List<Guest> listPageGuest(Guest guest);
+	//添加数据
+	void insertGuest(Guest guest);
+	//更新数据
+	void updateGuest(Guest guest);
+	//删除数据
+	void deleteGuest(int gId);
+	//设置置顶
+	void updateGuestSetTop(int gId);
+	//解除置顶
+	void updateGuestSetunTop(int gId);
+	//根据guestid获取数据
+	Guest getGuestById(int gId);
+	//根据标题获取同标题的数据条数
+	int getGuestCountBygTitle(String gTitle);
+	//撤回
+	void updateGuestUnpublish(int gId);
+-->
+<select id="listPageGuest" parameterType="Guest" resultMap="GuestResultMap">
+	select tb_guest.*,tb_activityclass.ac_title from tb_guest,tb_activityclass where g_type=ac_id
+	<if test="gTitle!=null and gTitle!=''">
+		and g_title like "%"#{gTitle}"%"
+	</if>
+	<if test="gSetTop!=null">
+		and g_settop=#{gSetTop}
+	</if>
+	<if test="gPublish!=null">
+		and g_publish=#{gPublish}
+	</if>
+	order by g_settop,g_publish
+</select>
+<insert id="insertGuest" parameterType="Guest" useGeneratedKeys="true">
+	insert into tb_guest(g_title,g_type,g_issuer,g_publishtime,g_createtime,g_img,g_order,g_publish)
+	values(#{gTitle},#{gType},#{gIssuer},#{gPublishTime},#{gCreateTime},#{gImg},#{gOrder},0)
+</insert>
+<update id="updateGuest" parameterType="Guest">
+	update tb_guest set
+	g_title=#{gTitle},
+	g_type=#{gType},
+	g_publishtime=#{gPublishTime},
+	g_img=#{gImg},
+	g_order=#{gOrder},
+	g_modifier=#{gModifier},
+	g_modifytime=#{gModifyTime}
+	where g_id=#{gId}
+</update>
+<delete id="deleteGuest" parameterType="int">
+	delete from tb_guest where g_id=#{gId}
+</delete>
+<update id="updateGuestSetTop" parameterType="int">
+	update tb_guest set g_settop=0 where g_id=#{gId}
+</update>
+<update id="updateGuestSetunTop" parameterType="int">
+	update tb_guest set g_settop=1 where g_id=#{gId}
+</update>
+<select id="getGuestById" parameterType="int" resultMap="GuestResultMap">
+	select * from tb_guest where g_id=#{gId}
+</select>
+<select id="getGuestCountBygTitle" parameterType="string" resultType="int">
+	select count(*) from tb_guest where g_title=#{gTitle}
+</select>
+<update id="updateGuestUnpublish" parameterType="int">
+	update tb_guest set g_publish=1 where g_id=#{gId}
+</update>
+</mapper>

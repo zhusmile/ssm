@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.BaseMapper">
+<resultMap type="Base" id="PartBaseResultMap">
+	<id column="b_id" property="bId"/>
+	<result column="b_name" property="bName"/>
+	<result column="b_area" property="bArea"/>
+</resultMap>
+<resultMap type="Base" id="BaseResultMap">
+	<id column="b_id" property="bId"/>
+	<result column="b_name" property="bName"/>
+	<result column="b_area" property="bArea"/>
+	<result column="b_batch" property="bBatch"/>
+	<result column="b_type" property="bType"/>
+	<result column="b_issuerorg" property="bIssuerOrg"/>
+	<result column="b_creator" property="bCreator"/>
+	<result column="b_createtime" property="bCreateTime"/>
+	<result column="b_modifier" property="bModifier"/>
+	<result column="b_modifytime" property="bModifyTime"/>
+	<result column="b_order" property="bOrder"/>
+	<result column="b_settop" property="bSetTop"/>
+	<result column="b_filesrc" property="bFileSrc"/>
+	<result column="b_title1" property="bTitle1"/>
+	<result column="b_title2" property="bTitle2"/>
+	<result column="b_title3" property="bTitle3"/>
+	<result column="b_title4" property="bTitle4"/>
+	<result column="b_title5" property="bTitle5"/>
+	<result column="b_title6" property="bTitle6"/>
+	<result column="b_title7" property="bTitle7"/>
+	<result column="b_title8" property="bTitle8"/>
+	<result column="b_title9" property="bTitle9"/>
+	<result column="b_content1" property="bContent1"/>
+	<result column="b_content2" property="bContent2"/>
+	<result column="b_content3" property="bContent3"/>
+	<result column="b_content4" property="bContent4"/>
+	<result column="b_content5" property="bContent5"/>
+	<result column="b_content6" property="bContent6"/>
+	<result column="b_content7" property="bContent7"/>
+	<result column="a_name" property="bAreaName"/>
+	<result column="i_name" property="bIssuerOrgName"/>
+</resultMap>
+<resultMap type="Base" id="BaseResultMap1">
+	<id column="b_id" property="bId"/>
+	<result column="b_name" property="bName"/>
+	<result column="b_area" property="bArea"/>
+	<result column="b_batch" property="bBatch"/>
+	<result column="b_type" property="bType"/>
+	<result column="b_issuerorg" property="bIssuerOrg"/>
+	<result column="b_creator" property="bCreator"/>
+	<result column="b_createtime" property="bCreateTime"/>
+	<result column="b_modifier" property="bModifier"/>
+	<result column="b_modifytime" property="bModifyTime"/>
+	<result column="b_order" property="bOrder"/>
+	<result column="b_settop" property="bSetTop"/>
+	<result column="b_filesrc" property="bFileSrc"/>
+	<result column="b_title1" property="bTitle1"/>
+	<result column="b_title2" property="bTitle2"/>
+	<result column="b_title3" property="bTitle3"/>
+	<result column="b_title4" property="bTitle4"/>
+	<result column="b_title5" property="bTitle5"/>
+	<result column="b_title6" property="bTitle6"/>
+	<result column="b_title7" property="bTitle7"/>
+	<result column="b_title8" property="bTitle8"/>
+	<result column="b_title9" property="bTitle9"/>
+	<result column="b_content1" property="bContent1"/>
+	<result column="b_content2" property="bContent2"/>
+	<result column="b_content3" property="bContent3"/>
+	<result column="b_content4" property="bContent4"/>
+	<result column="b_content5" property="bContent5"/>
+	<result column="b_content6" property="bContent6"/>
+	<result column="b_content7" property="bContent7"/>
+</resultMap>
+<!-- 前两条添加动态的时候作为基地选项使用 -->
+<select id="getBaseListByArea" parameterType="int" resultMap="PartBaseResultMap">
+	select b_id,b_name,b_area from tb_base where b_area=#{bArea}
+</select>
+<select id="getBaseList" resultMap="PartBaseResultMap">
+	select b_id,b_name,b_area from tb_base
+</select>
+<!-- 	//获取信息
+	List<Base> listPageBase(Base base);
+	//添加信息
+	void insertBase(Base base);
+	//删除信息
+	void deleteBaseById(int bId);
+	//通过id 获取信息
+	Base getBaseById(int bId);
+	//更新信息
+	void updateBase(Base base);
+	//设置置顶
+	void updateBaseSetTop(int bId);
+	//取消置顶
+	void updateBaseSetunTop(int bId);
+	//查看name是否存在
+	int getCountOfName(String bName);
+ -->
+<select id="listPageBase" parameterType="Base" resultMap="BaseResultMap">
+select tb_base.*,tb_area.a_name,tb_institution.i_name from tb_base LEFT JOIN tb_area on tb_base.b_area=tb_area.a_id LEFT JOIN tb_institution ON tb_base.b_issuerorg=tb_institution.i_id
+	<where>
+		<if test="bName!=null and bName!=''">
+		 	b_name like "%"#{bName}"%"
+		</if>
+		<if test="bType!=null">
+			and b_type=#{bType}
+		</if>
+		<if test="bBatch!=null">
+			and b_batch=#{bBatch}
+		</if>
+		<if test="bSetTop!=null">
+			and b_settop=#{bSetTop}
+		</if>
+	</where>
+	order by b_settop,b_order,b_modifytime desc
+</select>
+<insert id="insertBase" parameterType="Base" useGeneratedKeys="true">
+	insert into tb_base(b_name,b_area,b_batch,b_type,b_issuerorg,b_creator,b_createtime,b_order,b_filesrc,b_title1,b_title2,b_title3,b_title4,b_title5,b_title6,b_title7,b_title8,b_title9,
+	b_content1,b_content2,b_content3,b_content4,b_content5,b_content6,b_content7)
+	values(#{bName},#{bArea},#{bBatch},#{bType},#{bIssuerOrg},#{bCreator},#{bCreateTime},#{bOrder},#{bFileSrc},#{bTitle1},#{bTitle2},#{bTitle3},#{bTitle4},#{bTitle5},#{bTitle6},#{bTitle7},#{bTitle8},#{bTitle9},
+	#{bContent1},#{bContent2},#{bContent3},#{bContent4},#{bContent5},#{bContent6},#{bContent7})
+</insert>
+<delete id="deleteBaseById" parameterType="int">
+	delete from tb_base where b_id=#{bId}
+</delete>
+<select id="getBaseById" parameterType="int" resultMap="BaseResultMap1">
+	select * from tb_base where b_id=#{bId}
+</select>
+<update id="updateBase" parameterType="Base">
+	update tb_base set b_name=#{bName},
+	b_area=#{bArea},
+	b_batch=#{bBatch},
+	b_type=#{bType},
+	b_issuerorg=#{bIssuerOrg},
+	b_modifier=#{bModifier},
+	b_modifytime=#{bModifyTime},
+	b_order=#{bOrder},
+	b_filesrc=#{bFileSrc},
+	b_title1=#{bTitle1},
+	b_title2=#{bTitle2},
+	b_title3=#{bTitle3},
+	b_title4=#{bTitle4},
+	b_title5=#{bTitle5},
+	b_title6=#{bTitle6},
+	b_title7=#{bTitle7},
+	b_title8=#{bTitle8},
+	b_title9=#{bTitle9},
+	b_content1=#{bContent1},
+	b_content2=#{bContent2},
+	b_content3=#{bContent3},
+	b_content4=#{bContent4},
+	b_content5=#{bContent5},
+	b_content6=#{bContent6},
+	b_content7=#{bContent7}
+	where b_id=#{bId}
+</update>
+<update id="updateBaseSetTop" parameterType="int">
+	update tb_base set b_settop=0 where b_id=#{bId}
+</update>
+<update id="updateBaseSetunTop" parameterType="int">
+	update tb_base set b_settop=1 where b_id=#{bId}
+</update>
+<select id="getCountOfName" parameterType="string" resultType="int">
+	select count(*) from tb_base where b_name=#{bName}
+</select>
+<select id="getBaseByBatchOrTypeOrAreaOrName" parameterType="Base" resultMap="BaseResultMap">
+	select * from tb_base <where>
+	<if test="bType!=null">
+		b_type=#{bType}
+	</if>
+	<if test="bBatch!=null">
+		and b_batch=#{bBatch}
+	</if>
+	<if test="bArea!=null">
+		and b_area=#{bArea}
+	</if>
+	<if test="bName!=null and bName!=''">
+		and b_name like "%"#{bName}"%"
+	</if>
+	</where>
+</select>
+</mapper>

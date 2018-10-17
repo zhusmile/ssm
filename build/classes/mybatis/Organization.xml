@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.OrgMapper">
+<sql id="orgColumns">org_name,org_src,org_link,org_type,org_order,org_setTop</sql>
+<resultMap type="Organization" id="OrgResultMap">
+	<id column="org_id" property="orgId"/>
+	<result column="org_name" property="orgName"/>
+	<result column="org_src" property="orgSrc"/>
+	<result column="org_link" property="orgLink"/>
+	<result column="org_type" property="orgType"/>
+	<result column="org_order" property="orgOrder"/>
+	<result column="org_setTop" property="orgSetTop"/>
+</resultMap>
+<!-- 	//获取数据列表
+	List<Organization> listPageOrganization(Organization org);
+	//添加数据
+	void insertOrganization(Organization org);
+	//修改数据
+	void updateOrganization(Organization org);
+	//删除数据
+	void deleteOrganization(int orgId);
+	//置顶
+	void updateOrganizationSetTop(int orgId);
+	//取消置顶
+	void updateOrganizationSetUnTop(int orgId);
+	//根据id获取数据
+	Organization getOrganizationById(int infoId);
+ -->
+ <select id="listPageOrganization" parameterType="Organization" resultMap="OrgResultMap">
+ 	select * from tb_organization where org_type=#{orgType}
+ </select>
+<insert id="insertOrganization" parameterType="Organization" useGeneratedKeys="true">
+	insert into tb_organization(<include refid="orgColumns"></include>)
+	values(#{orgName},#{orgSrc},#{orgLink},#{orgType},#{orgOrder},#{orgSetTop})
+</insert>
+<update id="updateOrganization" parameterType="Organization">
+	update tb_organization set
+	org_name=#{orgName},
+	org_src=#{orgSrc},
+	org_link=#{orgLink},
+	org_order=#{orgOrder}
+	where org_id=#{orgId}
+</update>
+<delete id="deleteOrganization" parameterType="int">
+	delete from tb_organization where org_id=#{orgId}
+</delete>
+<update id="updateOrganizationSetTop" parameterType="int">
+	update tb_organization set org_setTop=1 where org_id=#{orgId}
+</update>
+<update id="updateOrganizationSetUnTop" parameterType="int">
+	update tb_organization set org_setTop=2 where org_id=#{orgId}
+</update>
+<select id="getOrganizationById" parameterType="int" resultMap="OrgResultMap">
+	select * from tb_organization where org_id=#{orgId}
+</select>
+</mapper>
